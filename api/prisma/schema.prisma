@@ -11,3 +11,77 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  password     String
+  name         String
+  projects     Project[]
+  roadmapItems RoadmapItem[]
+  comments     Comment[]
+}
+
+model Project {
+  id         String       @id @default(uuid())
+  name       String       @unique
+  slug       String
+  users      User[]
+  roadmap    Roadmap?
+  changelogs Changelogs[]
+  feedbacks  Feedback[]
+}
+
+model Roadmap {
+  id        String        @id @default(uuid())
+  projectId String        @unique
+  project   Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  category  String
+  status    String
+  items     RoadmapItem[]
+}
+
+model RoadmapItem {
+  id             String   @id @default(uuid())
+  name           String
+  status         String
+  label          String
+  tags           String[]
+  description    String
+  roadmapId      String
+  roadmap        Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  assignedUserId String
+  assignedUser   User     @relation(fields: [assignedUserId], references: [id])
+}
+
+model Changelogs {
+  id        String    @id @default(uuid())
+  title     String
+  content   String
+  status    String // "draft" | "published"
+  projectId String
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Comment {
+  id          String     @id @default(uuid())
+  content     String
+  changelogId String
+  changelog   Changelogs @relation(fields: [changelogId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Feedback {
+  id        String   @id @default(uuid())
+  content   String
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
