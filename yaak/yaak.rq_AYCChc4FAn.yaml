@@ -1,0 +1,26 @@
+type: http_request
+model: http_request
+id: rq_AYCChc4FAn
+createdAt: 2025-12-10T20:39:19.942551800
+updatedAt: 2025-12-13T23:33:20.849424100
+workspaceId: wk_7ztExVezQV
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: API_URL/auth/session
+sortPriority: -1765399159936.0
+url: ${[ API_URL ]}/auth/session
+urlParameters:
+- enabled: false
+  name: API_URL
+  value: http://localhost:8000/api
+  id: YPzvsCargR
+- enabled: true
+  name: ''
+  value: ''
+  id: snBxUs8qVt

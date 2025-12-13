@@ -1,0 +1,14 @@
+type: workspace
+model: workspace
+id: wk_7ztExVezQV
+createdAt: 2025-12-10T20:39:16.835243500
+updatedAt: 2025-12-10T20:39:16.835244900
+authentication: {}
+authenticationType: null
+description: ''
+headers: []
+name: RoadUp
+encryptionKeyChallenge: null
+settingValidateCertificates: true
+settingFollowRedirects: true
+settingRequestTimeout: 0
