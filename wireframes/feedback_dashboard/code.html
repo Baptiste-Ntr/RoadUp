@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Feedback Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d6cf2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-white h-screen overflow-hidden flex font-display">
+<!-- Sidebar -->
+<aside class="w-72 bg-white dark:bg-[#1a202c] border-r border-[#dbdfe6] dark:border-[#2d3748] flex flex-col h-full shrink-0 z-20">
+<div class="flex flex-col h-full p-4 justify-between">
+<div class="flex flex-col gap-6">
+<!-- User Profile / App Header -->
+<div class="flex gap-3 items-center px-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 shadow-sm" data-alt="Product Manager Avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCGB1K0m7_bl0i6SwbQaI3qi4JYmrobv_c1A74BZ-iLyibiCGNJVXZAbhEXq4zEPC1I9nN-T6B84sZMdAe0Lefx_84xCdB8pJUpjkta-lvF_ALlATeSJRwsMAqzxAvJPHERh0Fb5C3yz2OgskAN4iM810K9Rq2l3EW0bDv-Cua-FQHXK-sp5wIPy35HWpzPtbSDcdTxjgRLw2aeuSGrah0JbKK12r9097jdfnkqqwO4ZFGK2RbOr-MqImSgUQSTG2dERk-2umpxig");'></div>
+<div class="flex flex-col">
+<h1 class="text-[#111418] dark:text-white text-base font-bold leading-normal">SaaS Prod</h1>
+<p class="text-[#60728a] dark:text-[#a0aec0] text-sm font-normal leading-normal">Product Manager</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary group transition-colors" href="#">
+<span class="material-symbols-outlined filled">dashboard</span>
+<p class="text-sm font-semibold leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-background-light dark:hover:bg-[#2d3748] text-[#111418] dark:text-[#e2e8f0] transition-colors" href="#">
+<span class="material-symbols-outlined">map</span>
+<p class="text-sm font-medium leading-normal">Roadmap</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-background-light dark:hover:bg-[#2d3748] text-[#111418] dark:text-[#e2e8f0] transition-colors" href="#">
+<span class="material-symbols-outlined">article</span>
+<p class="text-sm font-medium leading-normal">Changelog</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-background-light dark:hover:bg-[#2d3748] text-[#111418] dark:text-[#e2e8f0] transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+</nav>
+</div>
+<!-- Bottom Action -->
+<div class="p-2">
+<button class="flex items-center gap-3 w-full px-3 py-2 text-[#60728a] hover:text-[#111418] dark:text-[#a0aec0] dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Sign Out</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<div class="flex-1 overflow-y-auto p-4 md:p-8 lg:p-10 scroll-smooth">
+<div class="max-w-[1200px] mx-auto flex flex-col gap-8 pb-20">
+<!-- Page Heading -->
+<header class="flex flex-wrap justify-between items-end gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-[#111418] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Feedback Inbox</h1>
+<p class="text-[#60728a] dark:text-[#a0aec0] text-base font-normal leading-normal">Manage and prioritize user requests.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex h-10 items-center justify-center gap-2 rounded-lg bg-white dark:bg-[#1a202c] border border-[#dbdfe6] dark:border-[#2d3748] px-4 text-sm font-bold text-[#111418] dark:text-white shadow-sm hover:bg-gray-50 dark:hover:bg-[#2d3748] transition-colors">
+<span class="material-symbols-outlined text-[20px]">cloud_download</span>
+                            Export
+                        </button>
+<button class="flex h-10 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-bold text-white shadow-sm hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                            Add Manual Feedback
+                        </button>
+</div>
+</header>
+<!-- Stats Overview -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a202c] border border-[#dbdfe6] dark:border-[#2d3748] shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-[#60728a] dark:text-[#a0aec0] text-sm font-semibold uppercase tracking-wider">Pending Review</p>
+<span class="material-symbols-outlined text-[#60728a] dark:text-[#a0aec0]">pending_actions</span>
+</div>
+<p class="text-[#111418] dark:text-white tracking-tight text-3xl font-bold leading-tight">12</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a202c] border border-[#dbdfe6] dark:border-[#2d3748] shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-[#60728a] dark:text-[#a0aec0] text-sm font-semibold uppercase tracking-wider">Planned</p>
+<span class="material-symbols-outlined text-primary">map</span>
+</div>
+<p class="text-[#111418] dark:text-white tracking-tight text-3xl font-bold leading-tight">5</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a202c] border border-[#dbdfe6] dark:border-[#2d3748] shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-[#60728a] dark:text-[#a0aec0] text-sm font-semibold uppercase tracking-wider">Total Votes</p>
+<span class="material-symbols-outlined text-[#60728a] dark:text-[#a0aec0]">thumb_up</span>
+</div>
+<p class="text-[#111418] dark:text-white tracking-tight text-3xl font-bold leading-tight">1,240</p>
+</div>
+</div>
+<!-- Filters & Controls -->
+<div class="flex flex-col gap-4">
+<div class="flex flex-col md:flex-row gap-4">
+<div class="relative flex-1">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#60728a] material-symbols-outlined">search</span>
+<input class="w-full h-12 rounded-xl border border-[#dbdfe6] dark:border-[#2d3748] bg-white dark:bg-[#1a202c] pl-12 pr-4 text-[#111418] dark:text-white placeholder:text-[#60728a] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm" placeholder="Search feedback keywords..."/>
+</div>
+<div class="relative md:w-64">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#60728a] material-symbols-outlined">filter_list</span>
+<select class="w-full h-12 rounded-xl border border-[#dbdfe6] dark:border-[#2d3748] bg-white dark:bg-[#1a202c] pl-12 pr-4 text-[#111418] dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary appearance-none cursor-pointer shadow-sm">
+<option>Sort by: Top Voted</option>
+<option>Sort by: Newest</option>
+<option>Sort by: Oldest</option>
+</select>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-[#60728a] material-symbols-outlined pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="flex flex-wrap gap-2">
+<button class="flex h-8 items-center justify-center px-4 rounded-full bg-[#111418] dark:bg-white text-white dark:text-[#111418] text-sm font-medium transition-colors">All</button>
+<button class="flex h-8 items-center justify-center px-4 rounded-full bg-white dark:bg-[#1a202c] border border-[#dbdfe6] dark:border-[#2d3748] hover:bg-[#f0f2f5] dark:hover:bg-[#2d3748] text-[#60728a] dark:text-[#a0aec0] text-sm font-medium transition-colors">UX Improvements</button>
+<button class="flex h-8 items-center justify-center px-4 rounded-full bg-white dark:bg-[#1a202c] border border-[#dbdfe6] dark:border-[#2d3748] hover:bg-[#f0f2f5] dark:hover:bg-[#2d3748] text-[#60728a] dark:text-[#a0aec0] text-sm font-medium transition-colors">Integrations</button>
+<button class="flex h-8 items-center justify-center px-4 rounded-full bg-white dark:bg-[#1a202c] border border-[#dbdfe6] dark:border-[#2d3748] hover:bg-[#f0f2f5] dark:hover:bg-[#2d3748] text-[#60728a] dark:text-[#a0aec0] text-sm font-medium transition-colors">Reporting</button>
+<button class="flex h-8 items-center justify-center px-4 rounded-full bg-white dark:bg-[#1a202c] border border-[#dbdfe6] dark:border-[#2d3748] hover:bg-[#f0f2f5] dark:hover:bg-[#2d3748] text-[#60728a] dark:text-[#a0aec0] text-sm font-medium transition-colors">Bugs</button>
+</div>
+</div>
+<!-- Feedback List -->
+<div class="flex flex-col gap-4">
+<!-- Card 1 -->
+<div class="group flex flex-col md:flex-row gap-5 p-5 bg-white dark:bg-[#1a202c] rounded-xl border border-[#dbdfe6] dark:border-[#2d3748] hover:border-primary/50 hover:shadow-lg transition-all duration-200">
+<!-- Voting -->
+<div class="flex md:flex-col items-center justify-center gap-1 md:min-w-[70px] h-fit md:h-auto p-2 bg-background-light dark:bg-[#2d3748] rounded-lg border border-transparent group-hover:bg-white group-hover:border-[#e2e8f0] dark:group-hover:border-[#4a5568] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-primary">arrow_drop_up</span>
+<span class="text-base font-bold text-[#111418] dark:text-white group-hover:text-primary">124</span>
+</div>
+<!-- Content -->
+<div class="flex-1 flex flex-col gap-3">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<h3 class="text-xl font-bold text-[#111418] dark:text-white group-hover:text-primary transition-colors cursor-pointer">Dark Mode Support</h3>
+<div class="flex md:hidden">
+<span class="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-bold uppercase tracking-wide">Planned</span>
+</div>
+</div>
+<p class="text-[#60728a] dark:text-[#a0aec0] text-base leading-relaxed">
+                                    It would be great to have a dark mode option for late-night sessions. The white background is a bit too bright in low light conditions.
+                                </p>
+</div>
+<div class="flex flex-wrap items-center gap-4 mt-auto">
+<div class="flex items-center gap-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-6" data-alt="User Avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuArg6l7fHe_PCFQ4eGNNSnnYOLLV1iEoSwI-VTt59GGawo49DkPuA3KHVLWiLXPeoVAGd1J20eqLZanXO32BfOZYep6Jhh8i-VLyIsm7PxenHOsxuYLUIR1LLlJmNtn3T1X7lJEc5XQplDwViqKlJu7asspsAeTJfYjOW7AH3b2war7edSi8mqy7TGz2rUkZ96RuAH0XGr6N4pC386Xqi3XY5kTjrqHcawG7crQTawx8d6xhrrIQdNYPFfs9koT_TKbYjwhW_TgbQ");'></div>
+<span class="text-sm text-[#60728a] dark:text-[#a0aec0] font-medium">Sarah Jenkins</span>
+</div>
+<span class="text-[#dbdfe6] dark:text-[#4a5568]">•</span>
+<span class="text-sm text-[#60728a] dark:text-[#a0aec0]">2 days ago</span>
+<span class="text-[#dbdfe6] dark:text-[#4a5568]">•</span>
+<span class="px-2 py-1 bg-[#f0f2f5] dark:bg-[#2d3748] text-[#60728a] dark:text-[#a0aec0] rounded text-xs font-medium">UX Improvements</span>
+</div>
+</div>
+<!-- Actions & Status (Desktop) -->
+<div class="hidden md:flex flex-col items-end justify-between gap-4 min-w-[160px]">
+<span class="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-bold uppercase tracking-wide border border-blue-100 dark:border-blue-900">Planned</span>
+<button class="w-full px-4 py-2 rounded-lg bg-white dark:bg-[#2d3748] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111418] dark:text-white text-sm font-semibold hover:bg-gray-50 dark:hover:bg-[#4a5568] hover:text-primary transition-colors text-center shadow-sm">
+                                View Details
+                            </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group flex flex-col md:flex-row gap-5 p-5 bg-white dark:bg-[#1a202c] rounded-xl border border-[#dbdfe6] dark:border-[#2d3748] hover:border-primary/50 hover:shadow-lg transition-all duration-200">
+<!-- Voting -->
+<div class="flex md:flex-col items-center justify-center gap-1 md:min-w-[70px] h-fit md:h-auto p-2 bg-background-light dark:bg-[#2d3748] rounded-lg border border-transparent group-hover:bg-white group-hover:border-[#e2e8f0] dark:group-hover:border-[#4a5568] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-primary">arrow_drop_up</span>
+<span class="text-base font-bold text-[#111418] dark:text-white group-hover:text-primary">89</span>
+</div>
+<!-- Content -->
+<div class="flex-1 flex flex-col gap-3">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<h3 class="text-xl font-bold text-[#111418] dark:text-white group-hover:text-primary transition-colors cursor-pointer">Slack Integration</h3>
+<div class="flex md:hidden">
+<span class="px-3 py-1 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-full text-xs font-bold uppercase tracking-wide">Under Review</span>
+</div>
+</div>
+<p class="text-[#60728a] dark:text-[#a0aec0] text-base leading-relaxed">
+                                    We use Slack for everything. It would be super helpful to get notifications about new roadmap items directly in our team channel.
+                                </p>
+</div>
+<div class="flex flex-wrap items-center gap-4 mt-auto">
+<div class="flex items-center gap-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-6" data-alt="User Avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAmCB_DyDBM04x5jv-5Hk-KIW5CixPROOjewJTIqMX40LffTruw33RRpdxruYIdqztUNRZHtqy4pyXqrVUrvr-lkLPu9ZKYzc2yh0gQgM3YudC9c_HyD4l_UvB31ZCqXE8axmDcWO4nZtlUAnCtF1MyWBl2DhWUYEPdLg7WlaiZG-wQnIpUkMD4xO1RWfML3ShxACYBFNon8NdM_M90gGtU1As729nf8wp1SN0vfZmnv3yM5eEHVTvt1EtOY-9WSUqykfTHTAZtWg");'></div>
+<span class="text-sm text-[#60728a] dark:text-[#a0aec0] font-medium">Mike Chen</span>
+</div>
+<span class="text-[#dbdfe6] dark:text-[#4a5568]">•</span>
+<span class="text-sm text-[#60728a] dark:text-[#a0aec0]">5 days ago</span>
+<span class="text-[#dbdfe6] dark:text-[#4a5568]">•</span>
+<span class="px-2 py-1 bg-[#f0f2f5] dark:bg-[#2d3748] text-[#60728a] dark:text-[#a0aec0] rounded text-xs font-medium">Integrations</span>
+</div>
+</div>
+<!-- Actions & Status (Desktop) -->
+<div class="hidden md:flex flex-col items-end justify-between gap-4 min-w-[160px]">
+<span class="px-3 py-1 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-full text-xs font-bold uppercase tracking-wide border border-yellow-100 dark:border-yellow-900">Under Review</span>
+<button class="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">fork_right</span>
+                                Promote to Roadmap
+                            </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group flex flex-col md:flex-row gap-5 p-5 bg-white dark:bg-[#1a202c] rounded-xl border border-[#dbdfe6] dark:border-[#2d3748] hover:border-primary/50 hover:shadow-lg transition-all duration-200">
+<!-- Voting -->
+<div class="flex md:flex-col items-center justify-center gap-1 md:min-w-[70px] h-fit md:h-auto p-2 bg-background-light dark:bg-[#2d3748] rounded-lg border border-transparent group-hover:bg-white group-hover:border-[#e2e8f0] dark:group-hover:border-[#4a5568] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-primary">arrow_drop_up</span>
+<span class="text-base font-bold text-[#111418] dark:text-white group-hover:text-primary">45</span>
+</div>
+<!-- Content -->
+<div class="flex-1 flex flex-col gap-3">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<h3 class="text-xl font-bold text-[#111418] dark:text-white group-hover:text-primary transition-colors cursor-pointer">Export to PDF</h3>
+<div class="flex md:hidden">
+<span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs font-bold uppercase tracking-wide">Open</span>
+</div>
+</div>
+<p class="text-[#60728a] dark:text-[#a0aec0] text-base leading-relaxed">
+                                    Clients sometimes ask for a physical copy of the roadmap for board meetings. A simple PDF export of the current view would be sufficient.
+                                </p>
+</div>
+<div class="flex flex-wrap items-center gap-4 mt-auto">
+<div class="flex items-center gap-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-6" data-alt="User Avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBvgQpocDNr-UAty-NUeAILSLwyvJzM6DAVKpuj-GOsjkN8fu0QwgoK5sQRtXmuguevV4f-raH6yfkhjfAS_JX3qTRP92Y0WbnDUvMORnruKqnD1Df_9bNLmo4Vz4K8o6MakBQ4HNg8DyEn5zPsq74uwtxjtO_BgnmvLnxPJuzq_shMiD6BM6zbd_j104gteuycJlU3PXzCNXAE7EqtwxB1IYSJKPFw_d3yR3m4iLbfphkI67d2xZrHjw-lK4zCQTG-XpX_X22a4Q");'></div>
+<span class="text-sm text-[#60728a] dark:text-[#a0aec0] font-medium">Emily Watson</span>
+</div>
+<span class="text-[#dbdfe6] dark:text-[#4a5568]">•</span>
+<span class="text-sm text-[#60728a] dark:text-[#a0aec0]">1 week ago</span>
+<span class="text-[#dbdfe6] dark:text-[#4a5568]">•</span>
+<span class="px-2 py-1 bg-[#f0f2f5] dark:bg-[#2d3748] text-[#60728a] dark:text-[#a0aec0] rounded text-xs font-medium">Reporting</span>
+</div>
+</div>
+<!-- Actions & Status (Desktop) -->
+<div class="hidden md:flex flex-col items-end justify-between gap-4 min-w-[160px]">
+<span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs font-bold uppercase tracking-wide border border-gray-200 dark:border-gray-600">Open</span>
+<button class="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">fork_right</span>
+                                Promote to Roadmap
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

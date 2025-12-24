@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Account Settings - Roadmap SaaS</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Noto+Sans:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d6cf2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #0d6cf2;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #0d6cf2;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white transition-colors duration-200">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-[#1a222e] px-4 py-3 md:px-10">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">Roadmap SaaS</h2>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex items-center gap-6">
+<a class="text-sm font-medium leading-normal text-slate-600 dark:text-slate-300 hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-sm font-medium leading-normal text-slate-600 dark:text-slate-300 hover:text-primary transition-colors" href="#">Roadmaps</a>
+<a class="text-sm font-medium leading-normal text-slate-600 dark:text-slate-300 hover:text-primary transition-colors" href="#">Changelog</a>
+<a class="text-sm font-medium leading-normal text-slate-600 dark:text-slate-300 hover:text-primary transition-colors" href="#">Feedback</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary text-white text-sm font-bold leading-normal hover:bg-blue-700 transition-colors">
+<span class="truncate">Create New</span>
+</button>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-9 border border-slate-200 dark:border-slate-700" data-alt="User profile picture placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAf0zbkHOWTnBxIfewCFeMBKYkQUvzCbvd8zR-TSIA6f-7Rj6ZrRW_aZBbDAu9rTHIBxhwBxt_FvtNvhtqzn3xYFpgyizZ13i8ak6NQbnWXBGpBPi6qhtvmCIUQglAq6cxAsWXM0noFrEEgEhZIrAyf1_RRheQzqGJConKQDIOHgbQj6Daep_jHQFVp1Jtv4fD01FJL4nlw4sv-wLjpgQm4f7-nHMBCm7rwSXpy41dm4Qt3_-cYe3BE_i_VA_44Wvysdb7l1z3l1g");'></div>
+</div>
+</header>
+<!-- Main Layout -->
+<div class="flex flex-1 flex-col md:flex-row max-w-[1440px] mx-auto w-full">
+<!-- Sidebar Navigation -->
+<aside class="w-full md:w-72 md:shrink-0 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-[#1a222e] p-4">
+<div class="sticky top-24">
+<!-- User Mini Profile -->
+<div class="flex gap-3 mb-8 items-center p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shadow-sm" data-alt="User avatar for sidebar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDbfNeNuyaDgLmhnfAtKSVeqDjNVfZc4RcLow49XQjsYWfeIEJkCOKxONgMoJ4qWuAzJ5gWczEHcHub3hXZOVPJD-47Xi5LCdT-qgO7isbFjCwGtIUUESvXL5Kg_BDlxNyXsCWmWcknyr9fCbvKiwZosU96y3rVRhrtiCQ99hXcio-NXVs_Ka-VBIulqpmlMyWPGK76JUcnOc2lRrOAQMMT0adyDyLJnDTSZG9x-W28_PyTgBph4IjqH3JbrAjBQXUIaCaFz1p5lw");'></div>
+<div class="flex flex-col">
+<h1 class="text-base font-bold leading-tight">Jane Doe</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal">Product Manager</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:text-blue-400 font-medium transition-colors" href="#profile">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="text-sm">Profile</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#subscription">
+<span class="material-symbols-outlined text-[20px]">credit_card</span>
+<span class="text-sm">Subscription</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#billing">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="text-sm">Billing History</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#notifications">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="text-sm">Notifications</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#security">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+<span class="text-sm">Security</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 p-6 md:p-10 lg:p-16 w-full max-w-[1000px] mx-auto">
+<!-- Page Header -->
+<div class="mb-8">
+<h1 class="text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em] mb-2 text-[#111418] dark:text-white">Account Settings</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base md:text-lg">Manage your personal information, billing, and preferences.</p>
+</div>
+<!-- Profile Section -->
+<section class="mb-12 scroll-mt-24" id="profile">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-bold text-[#111418] dark:text-white">Personal Information</h2>
+</div>
+<div class="bg-white dark:bg-[#1a222e] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<!-- Avatar Header -->
+<div class="p-6 md:p-8 border-b border-slate-100 dark:border-slate-800">
+<div class="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-24 shadow-inner" data-alt="Large user avatar profile" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDJ0mNs7vGiNJ1Jw24JJPqyYMCih2_7EbCW4qutlz1icV0SJDqZpEH18Fn2gfegGEMufMa79U9_BIFQYOjLGzXiyAQO4aduQCuWFB3l_z8q9dqUE0DngOdRVPZlqlyxXHcQhoyssFbPZJi9u26bYS6plORNWG2iGCms9o-TDRf5c_exy7NY2VsZJS5mGBUyHvBslcSQshAGGGOcP5H3apCVkQiO1vcCrvib7gKiZQmNDh670zW-0xOJl-grt_5TA33pnM_lt0hMOQ");'></div>
+<div class="flex flex-col gap-3">
+<div>
+<h3 class="text-lg font-bold">Jane Doe</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">jane.doe@company.com</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-white dark:bg-[#2d3748] border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                            Change Avatar
+                                        </button>
+<button class="px-4 py-2 text-red-600 dark:text-red-400 text-sm font-semibold hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                                            Remove
+                                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Form Fields -->
+<div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">First Name</label>
+<input class="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-[#111827] px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" type="text" value="Jane"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Last Name</label>
+<input class="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-[#111827] px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" type="text" value="Doe"/>
+</div>
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Email Address</label>
+<div class="relative">
+<span class="absolute left-3 top-2.5 text-slate-400 material-symbols-outlined text-[20px]">mail</span>
+<input class="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-[#111827] pl-10 pr-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" type="email" value="jane.doe@company.com"/>
+</div>
+</div>
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Bio</label>
+<textarea class="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-[#111827] px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none" rows="3">Product Manager passionate about building great user experiences.</textarea>
+<p class="text-xs text-slate-500">Brief description for your profile. URLs are hyperlinked.</p>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-6 md:p-8 bg-slate-50 dark:bg-[#141b26] border-t border-slate-200 dark:border-slate-800 flex justify-end gap-3">
+<button class="px-5 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 font-medium text-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Cancel</button>
+<button class="px-5 py-2.5 rounded-lg bg-primary text-white font-bold text-sm hover:bg-blue-700 shadow-md transition-colors">Save Changes</button>
+</div>
+</div>
+</section>
+<!-- Subscription Section -->
+<section class="mb-12 scroll-mt-24" id="subscription">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-bold text-[#111418] dark:text-white">Subscription Plan</h2>
+<span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-full uppercase tracking-wide">Active</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Current Plan Card -->
+<div class="lg:col-span-2 bg-white dark:bg-[#1a222e] rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-lg font-bold text-primary">Growth Plan</h3>
+<p class="text-sm text-slate-500 mt-1">Perfect for scaling teams.</p>
+</div>
+<div class="text-right">
+<p class="text-2xl font-black">$29<span class="text-sm font-normal text-slate-500">/mo</span></p>
+</div>
+</div>
+<div class="my-6">
+<div class="flex justify-between text-sm font-medium mb-2">
+<span>Roadmaps Used</span>
+<span class="text-slate-600 dark:text-slate-400">5 / 10</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2.5">
+<div class="bg-primary h-2.5 rounded-full" style="width: 50%"></div>
+</div>
+</div>
+<div class="flex gap-3 mt-6">
+<button class="flex-1 px-4 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors">Upgrade Plan</button>
+<button class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Cancel Subscription</button>
+</div>
+</div>
+<!-- Payment Method -->
+<div class="bg-white dark:bg-[#1a222e] rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm flex flex-col justify-between">
+<div>
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">Payment Method</h3>
+<div class="flex items-center gap-3 mb-2">
+<div class="h-8 w-12 bg-slate-100 dark:bg-slate-700 rounded flex items-center justify-center border border-slate-200 dark:border-slate-600">
+<span class="material-symbols-outlined text-slate-500">credit_card</span>
+</div>
+<div>
+<p class="text-sm font-bold">Visa ending in 4242</p>
+<p class="text-xs text-slate-500">Expires 12/2025</p>
+</div>
+</div>
+</div>
+<button class="text-primary text-sm font-bold hover:underline text-left mt-4">Edit Payment Method</button>
+</div>
+</div>
+</section>
+<!-- Billing History -->
+<section class="mb-12 scroll-mt-24" id="billing">
+<h2 class="text-xl font-bold text-[#111418] dark:text-white mb-6">Billing History</h2>
+<div class="bg-white dark:bg-[#1a222e] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead class="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-[#141b26] border-b border-slate-200 dark:border-slate-800">
+<tr>
+<th class="px-6 py-3 font-semibold" scope="col">Invoice</th>
+<th class="px-6 py-3 font-semibold" scope="col">Date</th>
+<th class="px-6 py-3 font-semibold" scope="col">Amount</th>
+<th class="px-6 py-3 font-semibold" scope="col">Status</th>
+<th class="px-6 py-3 font-semibold text-right" scope="col">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 font-medium text-[#111418] dark:text-white">#INV-2023-001</td>
+<td class="px-6 py-4 text-slate-500">Oct 24, 2023</td>
+<td class="px-6 py-4 font-medium">$29.00</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<div class="size-1.5 rounded-full bg-green-500"></div>
+<span class="text-green-700 dark:text-green-400 font-medium text-xs">Paid</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 font-medium text-[#111418] dark:text-white">#INV-2023-002</td>
+<td class="px-6 py-4 text-slate-500">Sep 24, 2023</td>
+<td class="px-6 py-4 font-medium">$29.00</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<div class="size-1.5 rounded-full bg-green-500"></div>
+<span class="text-green-700 dark:text-green-400 font-medium text-xs">Paid</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 font-medium text-[#111418] dark:text-white">#INV-2023-003</td>
+<td class="px-6 py-4 text-slate-500">Aug 24, 2023</td>
+<td class="px-6 py-4 font-medium">$29.00</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<div class="size-1.5 rounded-full bg-green-500"></div>
+<span class="text-green-700 dark:text-green-400 font-medium text-xs">Paid</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-slate-50 dark:bg-[#141b26] border-t border-slate-200 dark:border-slate-800 text-center">
+<a class="text-sm font-semibold text-primary hover:underline" href="#">View All Invoices</a>
+</div>
+</div>
+</section>
+<!-- Notifications -->
+<section class="mb-12 scroll-mt-24" id="notifications">
+<h2 class="text-xl font-bold text-[#111418] dark:text-white mb-6">Notifications</h2>
+<div class="bg-white dark:bg-[#1a222e] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+<div class="flex flex-col divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Toggle Item 1 -->
+<div class="flex items-center justify-between py-4 first:pt-0">
+<div class="pr-8">
+<h4 class="text-sm font-semibold text-[#111418] dark:text-white">Product Updates</h4>
+<p class="text-sm text-slate-500 mt-1">Receive emails about new features and improvements.</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 left-0 border-slate-300" id="toggle1" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer transition-colors duration-300" for="toggle1"></label>
+</div>
+</div>
+<!-- Toggle Item 2 -->
+<div class="flex items-center justify-between py-4">
+<div class="pr-8">
+<h4 class="text-sm font-semibold text-[#111418] dark:text-white">Security Alerts</h4>
+<p class="text-sm text-slate-500 mt-1">Get notified about suspicious logins or security issues.</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 left-0 border-slate-300" id="toggle2" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer transition-colors duration-300" for="toggle2"></label>
+</div>
+</div>
+<!-- Toggle Item 3 -->
+<div class="flex items-center justify-between py-4 last:pb-0">
+<div class="pr-8">
+<h4 class="text-sm font-semibold text-[#111418] dark:text-white">Marketing Newsletter</h4>
+<p class="text-sm text-slate-500 mt-1">Receive tips, tutorials, and marketing offers.</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 left-0 border-slate-300" id="toggle3" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer transition-colors duration-300" for="toggle3"></label>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Danger Zone -->
+<section class="scroll-mt-24" id="security">
+<h2 class="text-xl font-bold text-red-600 mb-6">Danger Zone</h2>
+<div class="bg-red-50 dark:bg-red-900/10 rounded-xl border border-red-100 dark:border-red-900/30 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+<div>
+<h4 class="text-sm font-bold text-red-800 dark:text-red-400">Delete Account</h4>
+<p class="text-sm text-red-600/70 dark:text-red-400/70 mt-1">Once you delete your account, there is no going back. Please be certain.</p>
+</div>
+<button class="px-4 py-2 bg-white border border-red-200 text-red-600 font-bold text-sm rounded-lg hover:bg-red-50 transition-colors whitespace-nowrap">
+                            Delete Account
+                        </button>
+</div>
+</section>
+</main>
+</div>
+</div>
+</body></html>

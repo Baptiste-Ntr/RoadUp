@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Public Roadmap</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0d6cf2",
+              "background-light": "#f5f7f8",
+              "background-dark": "#101722",
+              "card-light": "#ffffff",
+              "card-dark": "#1a222e",
+              "input-light": "#f0f2f5",
+              "input-dark": "#242e3b",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col overflow-x-hidden text-[#111418] dark:text-white antialiased selection:bg-primary/20">
+<!-- TopNavBar -->
+<nav class="sticky top-0 z-50 bg-card-light dark:bg-card-dark border-b border-[#f0f2f5] dark:border-[#2a323c] px-4 md:px-10 py-3">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<!-- Logo Icon -->
+<svg class="h-full w-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z" fill="currentColor" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">Roadmap Publique</h2>
+</div>
+<div class="flex items-center gap-4 md:gap-8">
+<div class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-primary transition-colors border-b-2 border-primary" href="#">Roadmap</a>
+<a class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Changelog</a>
+<a class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Feedback</a>
+</div>
+<button class="flex items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary hover:bg-primary/90 transition-colors text-white text-sm font-bold shadow-md shadow-blue-500/20">
+<span class="truncate">Suggest a Feature</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-4 md:px-10 py-8">
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10">
+<div class="flex flex-col gap-3 max-w-2xl">
+<h1 class="text-4xl font-black leading-tight tracking-[-0.033em]">Public Roadmap</h1>
+<p class="text-[#60728a] dark:text-[#94a3b8] text-lg leading-normal">
+                    See what we are working on and help us shape the future of our product. 
+                    Your feedback drives our development.
+                </p>
+</div>
+</div>
+<!-- Filters & Search -->
+<div class="flex flex-col lg:flex-row gap-4 mb-8">
+<!-- Search Bar -->
+<div class="flex-1 max-w-md">
+<label class="flex w-full h-11 items-stretch rounded-lg shadow-sm">
+<div class="text-[#60728a] flex border-none bg-input-light dark:bg-input-dark items-center justify-center pl-4 rounded-l-lg">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg rounded-l-none text-[#111418] dark:text-white bg-input-light dark:bg-input-dark border-none focus:ring-2 focus:ring-primary/50 placeholder:text-[#60728a] px-4 pl-2 text-base font-normal leading-normal transition-all" placeholder="Search features..."/>
+</label>
+</div>
+<!-- Chips / Filters -->
+<div class="flex gap-3 flex-wrap items-center">
+<button class="group flex h-10 items-center justify-center gap-x-2 rounded-lg bg-input-light dark:bg-input-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors pl-4 pr-3 border border-transparent dark:border-gray-700">
+<p class="text-sm font-medium leading-normal">Category</p>
+<span class="material-symbols-outlined text-[20px] text-gray-500 group-hover:text-gray-800 dark:group-hover:text-gray-200">expand_more</span>
+</button>
+<button class="group flex h-10 items-center justify-center gap-x-2 rounded-lg bg-input-light dark:bg-input-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors pl-4 pr-3 border border-transparent dark:border-gray-700">
+<p class="text-sm font-medium leading-normal">Status</p>
+<span class="material-symbols-outlined text-[20px] text-gray-500 group-hover:text-gray-800 dark:group-hover:text-gray-200">expand_more</span>
+</button>
+<button class="group flex h-10 items-center justify-center gap-x-2 rounded-lg bg-input-light dark:bg-input-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors pl-4 pr-3 border border-transparent dark:border-gray-700">
+<p class="text-sm font-medium leading-normal">Sort by: <span class="text-primary font-bold">Trending</span></p>
+<span class="material-symbols-outlined text-[20px] text-gray-500 group-hover:text-gray-800 dark:group-hover:text-gray-200">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Kanban Board -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+<!-- Column 1: Planned -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3 px-1">
+<div class="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"></div>
+<h3 class="text-lg font-bold leading-tight tracking-[-0.015em]">Planned / Under Review</h3>
+<span class="ml-auto text-xs font-bold text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded-full">3</span>
+</div>
+<!-- Card 1 -->
+<div class="group bg-card-light dark:bg-card-dark p-5 rounded-xl border border-transparent hover:border-primary/20 shadow-sm hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300 cursor-pointer flex flex-col gap-3">
+<div class="flex justify-between items-start gap-4">
+<h4 class="font-bold text-[#111418] dark:text-white text-lg leading-snug group-hover:text-primary transition-colors">Dark Mode Support</h4>
+</div>
+<p class="text-[#60728a] text-sm leading-relaxed line-clamp-2">Enable a system-wide dark theme that respects user OS preferences and reduces eye strain at night.</p>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+<span class="inline-flex items-center rounded-md bg-blue-50 dark:bg-blue-900/30 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-300 ring-1 ring-inset ring-blue-700/10">UX Design</span>
+<button class="flex items-center gap-1.5 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">thumb_up</span>
+<span class="text-sm font-bold">124</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group bg-card-light dark:bg-card-dark p-5 rounded-xl border border-transparent hover:border-primary/20 shadow-sm hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300 cursor-pointer flex flex-col gap-3">
+<div class="flex justify-between items-start gap-4">
+<h4 class="font-bold text-[#111418] dark:text-white text-lg leading-snug group-hover:text-primary transition-colors">API Rate Limiting</h4>
+</div>
+<p class="text-[#60728a] text-sm leading-relaxed line-clamp-2">Implement flexible rate limiting options for enterprise customers to better manage their API usage quotas.</p>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+<span class="inline-flex items-center rounded-md bg-purple-50 dark:bg-purple-900/30 px-2 py-1 text-xs font-medium text-purple-700 dark:text-purple-300 ring-1 ring-inset ring-purple-700/10">Dev Exp</span>
+<button class="flex items-center gap-1.5 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">thumb_up</span>
+<span class="text-sm font-bold">45</span>
+</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group bg-card-light dark:bg-card-dark p-5 rounded-xl border border-transparent hover:border-primary/20 shadow-sm hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300 cursor-pointer flex flex-col gap-3">
+<div class="flex justify-between items-start gap-4">
+<h4 class="font-bold text-[#111418] dark:text-white text-lg leading-snug group-hover:text-primary transition-colors">Mobile App Notifications</h4>
+</div>
+<p class="text-[#60728a] text-sm leading-relaxed line-clamp-2">Native push notifications for iOS and Android apps.</p>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+<span class="inline-flex items-center rounded-md bg-pink-50 dark:bg-pink-900/30 px-2 py-1 text-xs font-medium text-pink-700 dark:text-pink-300 ring-1 ring-inset ring-pink-700/10">Mobile</span>
+<button class="flex items-center gap-1.5 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">thumb_up</span>
+<span class="text-sm font-bold">32</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Column 2: In Progress -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3 px-1">
+<div class="w-3 h-3 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></div>
+<h3 class="text-lg font-bold leading-tight tracking-[-0.015em]">In Progress</h3>
+<span class="ml-auto text-xs font-bold text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded-full">2</span>
+</div>
+<!-- Card 1 -->
+<div class="group bg-card-light dark:bg-card-dark p-5 rounded-xl border border-l-4 border-l-amber-500 border-y-transparent border-r-transparent shadow-sm hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 cursor-pointer flex flex-col gap-3">
+<div class="flex justify-between items-start gap-4">
+<h4 class="font-bold text-[#111418] dark:text-white text-lg leading-snug group-hover:text-primary transition-colors">Slack Integration</h4>
+</div>
+<p class="text-[#60728a] text-sm leading-relaxed line-clamp-2">Connect your workspace to receive real-time updates and notifications directly in your Slack channels.</p>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+<span class="inline-flex items-center rounded-md bg-orange-50 dark:bg-orange-900/30 px-2 py-1 text-xs font-medium text-orange-700 dark:text-orange-300 ring-1 ring-inset ring-orange-700/10">Integrations</span>
+<button class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-[20px] fill-current">thumb_up</span>
+<span class="text-sm font-bold">89</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group bg-card-light dark:bg-card-dark p-5 rounded-xl border border-l-4 border-l-amber-500 border-y-transparent border-r-transparent shadow-sm hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 cursor-pointer flex flex-col gap-3">
+<div class="flex justify-between items-start gap-4">
+<h4 class="font-bold text-[#111418] dark:text-white text-lg leading-snug group-hover:text-primary transition-colors">Custom Reports Builder</h4>
+</div>
+<p class="text-[#60728a] text-sm leading-relaxed line-clamp-2">Drag and drop widget interface for creating custom analytics dashboards.</p>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+<span class="inline-flex items-center rounded-md bg-teal-50 dark:bg-teal-900/30 px-2 py-1 text-xs font-medium text-teal-700 dark:text-teal-300 ring-1 ring-inset ring-teal-700/10">Analytics</span>
+<button class="flex items-center gap-1.5 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">thumb_up</span>
+<span class="text-sm font-bold">67</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Column 3: Completed -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3 px-1">
+<div class="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+<h3 class="text-lg font-bold leading-tight tracking-[-0.015em]">Completed</h3>
+<span class="ml-auto text-xs font-bold text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded-full">4</span>
+</div>
+<!-- Card 1 -->
+<div class="group bg-card-light dark:bg-card-dark p-5 rounded-xl opacity-80 hover:opacity-100 border border-transparent hover:border-emerald-500/30 shadow-sm hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300 cursor-pointer flex flex-col gap-3">
+<div class="flex justify-between items-start gap-4">
+<h4 class="font-bold text-[#111418] dark:text-white text-lg leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">Single Sign-On (SSO)</h4>
+<span class="material-symbols-outlined text-emerald-500 text-[20px]">check_circle</span>
+</div>
+<p class="text-[#60728a] text-sm leading-relaxed line-clamp-2">Enterprise-grade security with SAML 2.0 and OpenID Connect support.</p>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+<span class="inline-flex items-center rounded-md bg-gray-100 dark:bg-gray-800 px-2 py-1 text-xs font-medium text-gray-600 dark:text-gray-400 ring-1 ring-inset ring-gray-500/10">Security</span>
+<span class="text-xs font-medium text-emerald-600 dark:text-emerald-400">Released 2 days ago</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group bg-card-light dark:bg-card-dark p-5 rounded-xl opacity-80 hover:opacity-100 border border-transparent hover:border-emerald-500/30 shadow-sm hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300 cursor-pointer flex flex-col gap-3">
+<div class="flex justify-between items-start gap-4">
+<h4 class="font-bold text-[#111418] dark:text-white text-lg leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">CSV Export</h4>
+<span class="material-symbols-outlined text-emerald-500 text-[20px]">check_circle</span>
+</div>
+<p class="text-[#60728a] text-sm leading-relaxed line-clamp-2">Export your data to CSV for further analysis in Excel or Google Sheets.</p>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+<span class="inline-flex items-center rounded-md bg-gray-100 dark:bg-gray-800 px-2 py-1 text-xs font-medium text-gray-600 dark:text-gray-400 ring-1 ring-inset ring-gray-500/10">Data</span>
+<span class="text-xs font-medium text-emerald-600 dark:text-emerald-400">Released 1 week ago</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group bg-card-light dark:bg-card-dark p-5 rounded-xl opacity-80 hover:opacity-100 border border-transparent hover:border-emerald-500/30 shadow-sm hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300 cursor-pointer flex flex-col gap-3">
+<div class="flex justify-between items-start gap-4">
+<h4 class="font-bold text-[#111418] dark:text-white text-lg leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">New Onboarding Flow</h4>
+<span class="material-symbols-outlined text-emerald-500 text-[20px]">check_circle</span>
+</div>
+<p class="text-[#60728a] text-sm leading-relaxed line-clamp-2">A completely redesigned welcome experience for new users.</p>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+<span class="inline-flex items-center rounded-md bg-gray-100 dark:bg-gray-800 px-2 py-1 text-xs font-medium text-gray-600 dark:text-gray-400 ring-1 ring-inset ring-gray-500/10">UX</span>
+<span class="text-xs font-medium text-emerald-600 dark:text-emerald-400">Released 2 weeks ago</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

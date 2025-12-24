@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Release Notes - SaaS Platform</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Noto+Sans:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d6cf2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-white">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Navigation -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f5] dark:border-gray-800 bg-white dark:bg-[#101722] px-4 md:px-10 py-3 shadow-sm">
+<div class="flex items-center gap-4 text-[#111418] dark:text-white">
+<div class="size-8 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Changelog</h2>
+</div>
+<div class="hidden md:flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-6 lg:gap-9">
+<a class="text-[#111418] dark:text-gray-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Roadmap</a>
+<a class="text-[#111418] dark:text-gray-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Feedback Board</a>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-blue-600 transition-colors">
+<span class="truncate">Sign In</span>
+</button>
+</div>
+<!-- Mobile Menu Icon (Placeholder) -->
+<div class="md:hidden flex items-center">
+<span class="material-symbols-outlined text-[#111418] dark:text-white">menu</span>
+</div>
+</header>
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 md:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col max-w-[960px] flex-1 w-full">
+<!-- Hero / Subscribe Section -->
+<div class="@container">
+<div class="flex flex-col items-center justify-end gap-6 px-4 py-10 md:py-16">
+<div class="flex flex-col gap-3 text-center items-center">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wide">
+<span class="material-symbols-outlined text-sm">notifications_active</span>
+                                    What's New
+                                </div>
+<h1 class="text-[#111418] dark:text-white tracking-tight text-3xl md:text-5xl font-black leading-tight max-w-[720px]">
+                                    Product Updates
+                                </h1>
+<p class="text-slate-500 dark:text-slate-400 text-base md:text-lg font-normal leading-normal max-w-[600px]">
+                                    Stay up to date with the latest changes, improvements, and feature releases.
+                                </p>
+</div>
+<div class="flex w-full justify-center mt-4">
+<label class="flex flex-col w-full max-w-[480px] h-12 md:h-14">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full shadow-sm ring-1 ring-slate-200 dark:ring-slate-700">
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-l-lg text-[#111418] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border-none bg-white dark:bg-slate-800 placeholder:text-slate-400 px-4 text-sm font-normal leading-normal" placeholder="Enter your email" value=""/>
+<div class="flex items-center justify-center rounded-r-lg bg-white dark:bg-slate-800 p-1">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-full px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-blue-600 transition-colors shadow-sm">
+<span class="truncate">Subscribe</span>
+</button>
+</div>
+</div>
+<p class="text-xs text-slate-400 mt-2 text-center">Join 4,000+ subscribers getting monthly updates.</p>
+</label>
+</div>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="sticky top-[73px] z-40 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm py-4 mb-6">
+<div class="flex gap-2 md:gap-3 overflow-x-auto pb-2 scrollbar-hide">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#111418] dark:bg-white text-white dark:text-[#111418] px-5 transition-transform active:scale-95 shadow-sm">
+<p class="text-sm font-bold leading-normal">All Updates</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[18px] text-primary">auto_awesome</span>
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal">New Features</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[18px] text-green-500">bug_report</span>
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal">Bug Fixes</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[18px] text-purple-500">trending_up</span>
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal">Improvements</p>
+</button>
+</div>
+</div>
+<!-- Content Feed -->
+<div class="flex flex-col gap-8 pb-10">
+<!-- Featured Update Card (Large) -->
+<div class="group relative overflow-hidden rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
+<!-- Image Section -->
+<div class="h-[280px] md:h-[320px] w-full bg-cover bg-center relative" data-alt="Abstract dark geometric pattern representing modern software interface" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA0rpS2JJANzGk5RyAzGBnFKxNXLAxlYu-LcTNnZV4fu8Bg_lR1J_LAIOpjfS8GrW5eaC4wRkB9MIgsH4ThBH6dAcSmrEyonD1sQjeyy-IKkKKNI62jrPnZ6kgC50teG5do_Km7XE1P0NbxOLpJwjVmSpqtk2r1PmDY95HhWForFG3Cuw5U6G3dmw866t5ZQfrcIOOtpl4Bh_Dq6HbZM12LrwU7AEu7-xCtAbQNG9O1pwXYbiGOaWY2YQWdJR77nsII_NJEjAFBQg");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 md:p-8 w-full">
+<div class="flex items-center gap-3 mb-3">
+<span class="inline-flex items-center rounded-md bg-primary/90 px-2.5 py-0.5 text-xs font-bold text-white ring-1 ring-inset ring-blue-700/10">v2.1.0</span>
+<span class="inline-flex items-center rounded-md bg-white/20 backdrop-blur-md px-2.5 py-0.5 text-xs font-medium text-white ring-1 ring-inset ring-white/10">New Feature</span>
+<span class="text-white/80 text-sm font-medium">2 days ago</span>
+</div>
+<h2 class="text-white text-3xl font-bold leading-tight mb-2 drop-shadow-sm">Dark Mode is Finally Here</h2>
+<p class="text-white/90 text-lg font-medium max-w-2xl line-clamp-2">
+                                        We have finally introduced a dark mode for better night-time visibility and reduced eye strain. Toggle it in your settings instantly.
+                                    </p>
+</div>
+</div>
+<!-- Content Details (Visible below image or expandable) -->
+<div class="p-6 md:p-8 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
+<div class="flex items-center gap-2">
+<div class="flex -space-x-2 overflow-hidden">
+<img alt="Author" class="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-slate-800" data-alt="Portrait of a male developer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXtniYmNmjSaVTeuE-4ciEqJ6DmSoLgO-K0s9xVtd1Q4OxTuJGull0QYCeITP-egIPqocNNETlecB9m5R_3KuRq_F6UtrfPFtxro0IRI35gBfIkJMNK6pwXfXcmR984lfod3RYMfPHXI6uRDh4uFcTt1mcWoiaI1LkPMJbMdjsWqMeIRWaxObMoRW7z4jvgRGtPRyUO5qH1zSYg5ERTw41AsGf_OKqrC8XSsLa0yxkQdi6clfn7IfIRXnHIUKozWur6yv7zwK0mQ"/>
+<img alt="Author" class="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-slate-800" data-alt="Portrait of a female designer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWREPpDEhTD2VFTPVN8s4jxIPFYBVyJf-BonlFQj7RGln4p9oEsVmBMf6ulewZjOjuZ-0rbthWWoATliC3riG0KUzb-KmhVT6dSZTRxI5Tm3teRe6urfDZu2UvcfFHFY3KNGcuUonuXpSEU1Zclr5-QzsuapaK9r_zCDa6rxelDQyoTXTZC70ocFDHTbkdgWBHw-I-OZOkzeY7JVylGbuW1Gd2T2kC5SvCu63wV3Vfqv0hxLstsEobhwhIFdxWrqDHoi7Ib7dqxA"/>
+</div>
+<span class="text-sm text-slate-500 dark:text-slate-400 font-medium ml-2">Released by The Core Team</span>
+</div>
+<button class="group/btn flex items-center gap-2 text-primary text-sm font-bold hover:text-blue-600 transition-colors">
+                                    Read full release note
+                                    <span class="material-symbols-outlined text-lg group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Divider -->
+<div class="flex items-center gap-4 py-4">
+<div class="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Previous Updates</span>
+<div class="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+</div>
+<!-- Standard Update Card 1 -->
+<article class="flex flex-col md:flex-row gap-6 p-6 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+<div class="shrink-0 flex flex-col gap-2 md:w-48">
+<div class="flex flex-wrap gap-2 items-center">
+<span class="text-slate-500 dark:text-slate-400 text-sm font-semibold">Sep 12, 2023</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-700 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 ring-1 ring-inset ring-slate-500/10">v2.0.5</span>
+<span class="material-symbols-outlined text-purple-500 text-[18px]" title="Improvement">trending_up</span>
+</div>
+</div>
+<div class="flex flex-col gap-3 flex-1">
+<h3 class="text-xl font-bold text-[#111418] dark:text-white">Performance improvements and API optimization</h3>
+<p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                                    Optimized database queries resulting in 50% faster load times across the dashboard. We've also updated our API documentation to reflect new endpoints for user management.
+                                </p>
+<div class="mt-2 flex items-center gap-4">
+<a class="text-primary text-sm font-semibold hover:underline" href="#">View details</a>
+<span class="w-1 h-1 rounded-full bg-slate-300"></span>
+<span class="text-slate-500 text-sm">3 min read</span>
+</div>
+</div>
+</article>
+<!-- Standard Update Card 2 -->
+<article class="flex flex-col md:flex-row gap-6 p-6 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+<div class="shrink-0 flex flex-col gap-2 md:w-48">
+<div class="flex flex-wrap gap-2 items-center">
+<span class="text-slate-500 dark:text-slate-400 text-sm font-semibold">Aug 28, 2023</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-700 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 ring-1 ring-inset ring-slate-500/10">v2.0.4</span>
+<span class="material-symbols-outlined text-green-500 text-[18px]" title="Bug Fix">bug_report</span>
+</div>
+</div>
+<div class="flex flex-col gap-3 flex-1">
+<h3 class="text-xl font-bold text-[#111418] dark:text-white">Squashing bugs in the reporting module</h3>
+<p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                                    Fixed an issue where PDF exports were missing charts on mobile devices. Resolved a race condition in the real-time notifications system that caused duplicate alerts.
+                                </p>
+<ul class="list-disc pl-5 space-y-1 text-sm text-slate-600 dark:text-slate-400 mt-1">
+<li>Fixed PDF rendering engine crash on iOS Safari.</li>
+<li>Corrected timestamp alignment in chat logs.</li>
+<li>Patched a minor security vulnerability in the invite flow.</li>
+</ul>
+<div class="mt-2 flex items-center gap-4">
+<a class="text-primary text-sm font-semibold hover:underline" href="#">View details</a>
+</div>
+</div>
+</article>
+<!-- Standard Update Card 3 (With small image) -->
+<article class="flex flex-col md:flex-row gap-6 p-6 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+<div class="shrink-0 flex flex-col gap-2 md:w-48">
+<div class="flex flex-wrap gap-2 items-center">
+<span class="text-slate-500 dark:text-slate-400 text-sm font-semibold">Aug 15, 2023</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-700 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 ring-1 ring-inset ring-slate-500/10">v2.0.0</span>
+<span class="material-symbols-outlined text-primary text-[18px]" title="Major Release">stars</span>
+</div>
+</div>
+<div class="flex flex-col gap-4 flex-1">
+<div>
+<h3 class="text-xl font-bold text-[#111418] dark:text-white">Major Release: Kanban Boards 2.0</h3>
+<p class="text-slate-600 dark:text-slate-300 leading-relaxed mt-2">
+                                        Complete overhaul of the project management interface. Drag and drop is now smoother, and you can visualize your workflow with new swimlanes.
+                                    </p>
+</div>
+<div class="w-full h-48 md:h-64 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 relative group cursor-pointer">
+<img alt="Kanban board interface on a laptop screen" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Kanban board interface on a laptop screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIdSicQdRTmIOXrjzQ1uohSOysC92U48Oj5702EtWkld8ono2h2NWhjLL6O40vF3FiZavHKWc42ckiSWuOOuUNRuHLBPWj5MlNUHOmX9414CZ2dMvIhKyD5xnaGbnMTSp1SkY5lPwdecHhyAA7Kl6vEEkCDMui-pgZq_4rmn_ImClCSNiP-a9_c15AS7AoCbOd7Jjj9Am4J8ockNrUT-Cuk5m1kvkInVBPK3JfdIIORuOX0wnHt7wVrxuleCLupwzJit17IOjMjQ"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/10 transition-colors">
+</div>
+</div>
+<div class="flex items-center gap-4">
+<a class="text-primary text-sm font-semibold hover:underline" href="#">Read full announcement</a>
+</div>
+</div>
+</article>
+<!-- Load More -->
+<div class="flex justify-center py-6">
+<button class="flex items-center gap-2 px-6 py-3 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                                Load older updates
+                                <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Simple Footer -->
+<footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#101722] py-8">
+<div class="layout-container px-4 md:px-40 flex flex-col items-center gap-4">
+<div class="flex gap-6 text-sm text-slate-500 dark:text-slate-400 font-medium">
+<a class="hover:text-primary" href="#">Home</a>
+<a class="hover:text-primary" href="#">Documentation</a>
+<a class="hover:text-primary" href="#">Support</a>
+<a class="hover:text-primary" href="#">Twitter</a>
+</div>
+<p class="text-slate-400 text-xs">© 2023 SaaS Platform Inc. All rights reserved.</p>
+</div>
+</footer>
+</div>
+</body></html>

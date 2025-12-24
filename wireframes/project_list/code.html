@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Project List - Acme Corp</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d6cf2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white antialiased overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Sidebar -->
+<aside class="w-72 flex-shrink-0 flex flex-col bg-white dark:bg-[#111418] border-r border-[#dbdfe6] dark:border-[#2a3441] transition-colors">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- Brand -->
+<div class="flex gap-3 items-center px-2">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-10 w-10 shrink-0 shadow-sm" data-alt="Acme Corp logo with abstract blue geometric shape" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDpsk26kIQb7UF7gsJpAEhUHxs_GsKGkqXMXZlcX7MO20Lc9AYtbsaOkv_8l1w0omC6xWpAR8DlrFzmk4dbGBgbohl-yk0kqtLX8HPnzmGUof-wLpp5ZgdisOQmgi03sP1gvSmR4IZXLzZ8RnQ-tNU-6kwajWW-ZpCnZI7t2gPk8brSwhIhaqG2OvCwgPrYjUpqI_D1h6ce6aVt_4iRRQ5z_n48oriMr05o7R-92da7lp5gXQ_I-RU0skersKesnUc707JMMEBQ1w");'></div>
+<div class="flex flex-col">
+<h1 class="text-[#111418] dark:text-white text-base font-bold leading-tight">Acme Corp</h1>
+<p class="text-[#60728a] dark:text-[#94a3b8] text-xs font-normal">SaaS Platform</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#f0f2f5] dark:bg-[#1f2937] group transition-colors" href="#">
+<span class="material-symbols-outlined text-[#111418] dark:text-white text-[24px]">folder</span>
+<p class="text-[#111418] dark:text-white text-sm font-medium">Projects</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-[#1f2937]/50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[#60728a] dark:text-[#94a3b8] group-hover:text-[#111418] dark:group-hover:text-white text-[24px]">map</span>
+<p class="text-[#60728a] dark:text-[#94a3b8] group-hover:text-[#111418] dark:group-hover:text-white text-sm font-medium">Roadmaps</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-[#1f2937]/50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[#60728a] dark:text-[#94a3b8] group-hover:text-[#111418] dark:group-hover:text-white text-[24px]">campaign</span>
+<p class="text-[#60728a] dark:text-[#94a3b8] group-hover:text-[#111418] dark:group-hover:text-white text-sm font-medium">Changelogs</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-[#1f2937]/50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[#60728a] dark:text-[#94a3b8] group-hover:text-[#111418] dark:group-hover:text-white text-[24px]">chat_bubble</span>
+<p class="text-[#60728a] dark:text-[#94a3b8] group-hover:text-[#111418] dark:group-hover:text-white text-sm font-medium">Feedback</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-[#1f2937]/50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[#60728a] dark:text-[#94a3b8] group-hover:text-[#111418] dark:group-hover:text-white text-[24px]">settings</span>
+<p class="text-[#60728a] dark:text-[#94a3b8] group-hover:text-[#111418] dark:group-hover:text-white text-sm font-medium">Settings</p>
+</a>
+</nav>
+</div>
+<!-- Upgrade CTA -->
+<div class="flex flex-col gap-4">
+<div class="px-3 py-4 bg-background-light dark:bg-[#1f2937] rounded-xl flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<p class="text-xs font-semibold text-[#111418] dark:text-white">Pro Plan</p>
+<span class="text-xs font-medium text-primary">85% used</span>
+</div>
+<div class="h-1.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[85%] rounded-full"></div>
+</div>
+</div>
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary hover:bg-primary/90 transition-colors text-white text-sm font-bold tracking-[0.015em]">
+<span class="truncate">Upgrade Plan</span>
+</button>
+<!-- User Profile Snippet -->
+<div class="flex items-center gap-3 mt-2 px-1 border-t border-[#dbdfe6] dark:border-[#2a3441] pt-4">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-8 w-8" data-alt="User profile picture of a woman smiling" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCEWutHI-IMhnrXtcJOW4CbFWluFXtjDAByiEk4wUo0x6Q9k6_kBUiqm-R_Lq2U3DmLrhP3kJAuPLPg-RSK9BTwQD8eL7Ro9XBt2X1A2mkZKHJ-DJ-vM1gn3WW0fvZN30S_hTRJu8luVp4JSlpTm2Fs-lKFxbp6rIBpbCRH6R-dcIozLG3nyyPFkvt-gs589sQiQh9lCzCr5r8uRAvozWh3E4cTdieC8QEmkhQHjBMaQ83K1SmbhWa37HH4lkKanHARM6GwYez0-A");'></div>
+<div class="flex flex-col">
+<p class="text-[#111418] dark:text-white text-sm font-medium leading-none">Jane Doe</p>
+<p class="text-[#60728a] dark:text-[#94a3b8] text-xs font-normal mt-1">Admin</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto">
+<div class="max-w-[1200px] mx-auto p-4 md:p-8 flex flex-col gap-6">
+<!-- Page Heading -->
+<div class="flex flex-wrap items-end justify-between gap-4">
+<div class="flex flex-col gap-2">
+<h1 class="text-[#111418] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Projects</h1>
+<p class="text-[#60728a] dark:text-[#94a3b8] text-base font-normal">Manage your roadmaps and changelogs.</p>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary hover:bg-primary/90 text-white text-sm font-bold shadow-sm transition-all hover:shadow-md">
+<span class="material-symbols-outlined text-[20px] mr-2">add</span>
+<span class="truncate">New Project</span>
+</button>
+</div>
+<!-- Toolbar: Search & Filters -->
+<div class="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center bg-white dark:bg-[#111418] p-4 rounded-xl border border-[#dbdfe6] dark:border-[#2a3441] shadow-sm">
+<!-- Search -->
+<div class="w-full md:w-80">
+<label class="flex w-full items-center h-10 rounded-lg bg-[#f0f2f5] dark:bg-[#1f2937] px-3 border border-transparent focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+<span class="material-symbols-outlined text-[#60728a] dark:text-[#94a3b8] text-[20px]">search</span>
+<input class="w-full bg-transparent border-none text-[#111418] dark:text-white placeholder:text-[#60728a] dark:placeholder:text-[#64748b] focus:ring-0 text-sm ml-2" placeholder="Search projects..."/>
+</label>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap gap-2">
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#1f2937] border border-[#dbdfe6] dark:border-[#374151] px-3 hover:bg-gray-50 dark:hover:bg-[#374151] transition-colors">
+<p class="text-[#111418] dark:text-white text-sm font-medium">Status: All</p>
+<span class="material-symbols-outlined text-[#60728a] dark:text-[#94a3b8] text-[20px]">keyboard_arrow_down</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#1f2937] border border-[#dbdfe6] dark:border-[#374151] px-3 hover:bg-gray-50 dark:hover:bg-[#374151] transition-colors">
+<p class="text-[#111418] dark:text-white text-sm font-medium">Owner: Anyone</p>
+<span class="material-symbols-outlined text-[#60728a] dark:text-[#94a3b8] text-[20px]">keyboard_arrow_down</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#1f2937] border border-[#dbdfe6] dark:border-[#374151] px-3 hover:bg-gray-50 dark:hover:bg-[#374151] transition-colors">
+<span class="material-symbols-outlined text-[#60728a] dark:text-[#94a3b8] text-[20px]">sort</span>
+<p class="text-[#111418] dark:text-white text-sm font-medium">Sort</p>
+</button>
+</div>
+</div>
+<!-- Project Table -->
+<div class="@container w-full overflow-hidden rounded-xl border border-[#dbdfe6] dark:border-[#2a3441] bg-white dark:bg-[#111418] shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-gray-50/50 dark:bg-[#1f2937]/30 border-b border-[#dbdfe6] dark:border-[#2a3441]">
+<th class="p-4 text-[#60728a] dark:text-[#94a3b8] text-xs font-semibold uppercase tracking-wider w-[35%]">Project Name</th>
+<th class="p-4 text-[#60728a] dark:text-[#94a3b8] text-xs font-semibold uppercase tracking-wider w-[15%]">Status</th>
+<th class="p-4 hidden sm:table-cell text-[#60728a] dark:text-[#94a3b8] text-xs font-semibold uppercase tracking-wider w-[15%]">Role</th>
+<th class="p-4 hidden md:table-cell text-[#60728a] dark:text-[#94a3b8] text-xs font-semibold uppercase tracking-wider w-[15%]">Members</th>
+<th class="p-4 hidden lg:table-cell text-[#60728a] dark:text-[#94a3b8] text-xs font-semibold uppercase tracking-wider w-[15%]">Last Updated</th>
+<th class="p-4 text-[#60728a] dark:text-[#94a3b8] text-xs font-semibold uppercase tracking-wider w-12"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#dbdfe6] dark:divide-[#2a3441]">
+<!-- Row 1 -->
+<tr class="group hover:bg-gray-50 dark:hover:bg-[#1f2937]/50 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-primary shrink-0">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[#111418] dark:text-white font-medium text-sm">Q3 Mobile App Launch</span>
+<span class="text-[#60728a] dark:text-[#94a3b8] text-xs">iOS &amp; Android release</span>
+</div>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                                                In Progress
+                                            </span>
+</td>
+<td class="p-4 hidden sm:table-cell">
+<span class="text-[#111418] dark:text-gray-200 text-sm">Owner</span>
+</td>
+<td class="p-4 hidden md:table-cell">
+<div class="flex -space-x-2 overflow-hidden">
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-[#111418] bg-cover bg-center" data-alt="Team member portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuALafhvWjpS2XFXFQIUBOJW6wQguNB5Lelpw1WYVsZx_LK7qS0Z4kSXQQu9lkOO2BJOpPO0YR4Z-8GsUT6Vf8kAMtohDgIazjadeEhQ1_5Z8TeZQ-b8vVNrTRSgI4b9MJCplTAqy-lUYSIJ-GVH5b0tmgpfNVKvTCRGQK7NCOuf0mlnf-y5h6C-BJB8mXEcd-f_znMCh9bHY9v1jeldmcHp_tBp30M6owJIZUh2sKdsIooWWZZAKrf3uZhIHLCuAQyrU7y_spguFw");'></div>
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-[#111418] bg-cover bg-center" data-alt="Team member portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDL1sxjncBKVudEd82d0eB8l4CeJkWXZ8rkyGycKJs_4Prpmg8Tx7pUrTGI0Bson4AxNQ5T_lWe0Q3rvmAn46-yD91KIDNBs2nfBWEhsjPlUC_EaK9IgcSk7HC1IL7M8vEq6KDGbekt8KhPmFdhyEU8A0vE2PcLXAqUF6fBywz7O6maBGjey2QcXbi42Y0in5V-RqDxjoPHgD1QAD-zokX4qQVcWZY7FaNYWJeCDOXKvknjfH0Ux49QxEvtwAKAFP7JFwi8AC5fUw");'></div>
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-[#111418] bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-xs font-medium text-gray-500 dark:text-gray-300">+2</div>
+</div>
+</td>
+<td class="p-4 hidden lg:table-cell">
+<span class="text-[#60728a] dark:text-[#94a3b8] text-sm">2 hours ago</span>
+</td>
+<td class="p-4 text-right">
+<button class="text-[#60728a] hover:text-[#111418] dark:text-[#94a3b8] dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-gray-50 dark:hover:bg-[#1f2937]/50 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 shrink-0">
+<span class="material-symbols-outlined">palette</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[#111418] dark:text-white font-medium text-sm">Website Redesign</span>
+<span class="text-[#60728a] dark:text-[#94a3b8] text-xs">Modernizing UI/UX</span>
+</div>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                                                Planning
+                                            </span>
+</td>
+<td class="p-4 hidden sm:table-cell">
+<span class="text-[#111418] dark:text-gray-200 text-sm">Editor</span>
+</td>
+<td class="p-4 hidden md:table-cell">
+<div class="flex -space-x-2 overflow-hidden">
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-[#111418] bg-cover bg-center" data-alt="Team member portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCMxclucrKO8migIIPDUTG1KvvB0iOpj4Qxl6CCoCNmHLfc9TyK0mQqCKqvWT6ez9M6fIPRae6FQhEcs0S0njQ_u3slnFuiE3grPigyDEtQMGZH4mhuG0Dkw_ptRnHhTukFCLqsMSk5Kj5rXTfAKlnZKJK9p0Tdg03ztMEOt8c52kJMsnKkjmrkTc_7WNOzGsdbfXeLu-vqC6fYLHgTbh28hQl6m8H4S4NaDqNlZPPPYIYIq0EDIKpLKN864tAGbt9RcIYqHq5ZEw");'></div>
+</div>
+</td>
+<td class="p-4 hidden lg:table-cell">
+<span class="text-[#60728a] dark:text-[#94a3b8] text-sm">1 day ago</span>
+</td>
+<td class="p-4 text-right">
+<button class="text-[#60728a] hover:text-[#111418] dark:text-[#94a3b8] dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-gray-50 dark:hover:bg-[#1f2937]/50 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 shrink-0">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[#111418] dark:text-white font-medium text-sm">Q4 Marketing Plan</span>
+<span class="text-[#60728a] dark:text-[#94a3b8] text-xs">Holiday campaigns</span>
+</div>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300">
+                                                Completed
+                                            </span>
+</td>
+<td class="p-4 hidden sm:table-cell">
+<span class="text-[#111418] dark:text-gray-200 text-sm">Viewer</span>
+</td>
+<td class="p-4 hidden md:table-cell">
+<div class="flex -space-x-2 overflow-hidden">
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-[#111418] bg-cover bg-center" data-alt="Team member portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD99Oym1SgPbrQTW1-66fa9yEWvgYtJpAhfUtuhPJzpi5YJOVyrvSD7zesYyT7_od2S51HCK92mAuzHStYj4dYatsADjdEOIxwNG8f04PaemSzRPlW3fY0lfZPKbH5p3T8Pa-EevpVTsim8ojzvlEnXAaDLrPRs8dYsDKlD8pm0TvuEJXCFD98O2xCe09WNCwFAtoSH_9Jsn4B7zSrn0N3hixfN26_ndx9oJ9-HRB4r2wlAO3rQzxALBSz72n15gJcxvJLzXFN7OA");'></div>
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-[#111418] bg-cover bg-center" data-alt="Team member portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDEvGG37MYP6ek3Ku-0YNpYcT29NNlbpr-3N-tjXzdmrQCrheVgPfd90MzZaFYJbyHEjrr37uZtsNX6eA2G4Cz6WJG0UxKjFAv2pDvDUoFCyqjBnPIB39NqNeJqE2-naiHFw6XD-1pshw0oNBx2Pfftegh62nVeRRSBoYfyR2iJOpG7hX5ZuNF1c2wXx0sBePSan_I7_zXsthZcAr-g6WlOLZdrS6zL37ylIw7pWmOswRFPkkF146_mp1NikGsl7wEXihsgF7_BYg");'></div>
+</div>
+</td>
+<td class="p-4 hidden lg:table-cell">
+<span class="text-[#60728a] dark:text-[#94a3b8] text-sm">3 days ago</span>
+</td>
+<td class="p-4 text-right">
+<button class="text-[#60728a] hover:text-[#111418] dark:text-[#94a3b8] dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-gray-50 dark:hover:bg-[#1f2937]/50 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 shrink-0">
+<span class="material-symbols-outlined">feedback</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[#111418] dark:text-white font-medium text-sm">Customer Feedback Loop</span>
+<span class="text-[#60728a] dark:text-[#94a3b8] text-xs">Review &amp; Integration</span>
+</div>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300">
+                                                At Risk
+                                            </span>
+</td>
+<td class="p-4 hidden sm:table-cell">
+<span class="text-[#111418] dark:text-gray-200 text-sm">Owner</span>
+</td>
+<td class="p-4 hidden md:table-cell">
+<div class="flex -space-x-2 overflow-hidden">
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-[#111418] bg-cover bg-center" data-alt="Team member portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAbxalVfR2kWIN4DcA3BgFiSi2xHyU4WMJkWuMEQJc59a-uRZ1WQ40WPLIMGi3FgB8FmpqkV7iDWfjyGMfZHvxx_JCfjhZr6mgzRi6PDEuD_IbEojXkMR-mOoonAMPkSHVa02RcSZkwrhn7dUqLJrVr2O9tkWV0ttHn05i9xwAqfP8zFgcJJJKtVfYUnZvXVcoB1NEqconzXCsifeycN1a7g5c1i-z9JkXMIhaUr-XVzb4qIkxMSYBoiOCMrSu3QWTkUh8pDOnnTQ");'></div>
+</div>
+</td>
+<td class="p-4 hidden lg:table-cell">
+<span class="text-[#60728a] dark:text-[#94a3b8] text-sm">1 week ago</span>
+</td>
+<td class="p-4 text-right">
+<button class="text-[#60728a] hover:text-[#111418] dark:text-[#94a3b8] dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="group hover:bg-gray-50 dark:hover:bg-[#1f2937]/50 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 shrink-0">
+<span class="material-symbols-outlined">api</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[#111418] dark:text-white font-medium text-sm">API Integration</span>
+<span class="text-[#60728a] dark:text-[#94a3b8] text-xs">Partner Connectors</span>
+</div>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                                Archived
+                                            </span>
+</td>
+<td class="p-4 hidden sm:table-cell">
+<span class="text-[#111418] dark:text-gray-200 text-sm">Admin</span>
+</td>
+<td class="p-4 hidden md:table-cell">
+<div class="flex -space-x-2 overflow-hidden">
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-[#111418] bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-xs font-medium text-gray-500 dark:text-gray-300">TM</div>
+</div>
+</td>
+<td class="p-4 hidden lg:table-cell">
+<span class="text-[#60728a] dark:text-[#94a3b8] text-sm">2 weeks ago</span>
+</td>
+<td class="p-4 text-right">
+<button class="text-[#60728a] hover:text-[#111418] dark:text-[#94a3b8] dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between p-4 border-t border-[#dbdfe6] dark:border-[#2a3441] bg-gray-50/50 dark:bg-[#111418]">
+<p class="text-xs text-[#60728a] dark:text-[#94a3b8]">Showing <span class="font-medium text-[#111418] dark:text-white">1-5</span> of <span class="font-medium text-[#111418] dark:text-white">24</span> projects</p>
+<div class="flex gap-2">
+<button class="h-8 px-3 rounded-lg border border-[#dbdfe6] dark:border-[#374151] bg-white dark:bg-[#1f2937] text-[#60728a] dark:text-[#94a3b8] hover:bg-gray-50 dark:hover:bg-[#374151] disabled:opacity-50 text-xs font-medium transition-colors">Previous</button>
+<button class="h-8 px-3 rounded-lg border border-[#dbdfe6] dark:border-[#374151] bg-white dark:bg-[#1f2937] text-[#60728a] dark:text-[#94a3b8] hover:bg-gray-50 dark:hover:bg-[#374151] text-xs font-medium transition-colors">Next</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
