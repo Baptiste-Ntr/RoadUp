@@ -22,75 +22,15 @@ import {
   MessageSquare,
   ArrowUpRight,
 } from "lucide-react";
+import { CreateFeedbackDialog } from "@/components/Dialogs/CreateFeedbackDialog";
+import { FeedbackDetailSheet } from "@/components/Sheets/FeedbackDetailSheet";
+import { useProjects } from "@/hooks/use-projects";
+import { toast } from "sonner";
+import { demoFeedbacks, type DemoFeedback } from "@/lib/demo-data";
 
 type FeedbackStatus = "open" | "under_review" | "planned" | "completed" | "closed";
 
-type Feedback = {
-  id: string;
-  title: string;
-  description: string;
-  status: FeedbackStatus;
-  category: string;
-  votes: number;
-  author: {
-    name: string;
-    avatar?: string;
-  };
-  created_at: string;
-};
-
-// Mock data
-const mockFeedback: Feedback[] = [
-  {
-    id: "1",
-    title: "Mode sombre",
-    description:
-      "Ce serait super d'avoir un mode sombre pour les sessions nocturnes. Le fond blanc est un peu trop lumineux en conditions de faible éclairage.",
-    status: "planned",
-    category: "UX Improvements",
-    votes: 124,
-    author: { name: "Sarah Jenkins" },
-    created_at: new Date(Date.now() - 2 * 24 * 3600000).toISOString(),
-  },
-  {
-    id: "2",
-    title: "Intégration Slack",
-    description:
-      "On utilise Slack pour tout. Ce serait très utile d'avoir des notifications sur les nouveaux items de roadmap directement dans notre channel.",
-    status: "under_review",
-    category: "Integrations",
-    votes: 89,
-    author: { name: "Mike Chen" },
-    created_at: new Date(Date.now() - 5 * 24 * 3600000).toISOString(),
-  },
-  {
-    id: "3",
-    title: "Export en PDF",
-    description:
-      "Les clients demandent parfois une copie physique de la roadmap pour les réunions du board. Un simple export PDF de la vue actuelle serait suffisant.",
-    status: "open",
-    category: "Reporting",
-    votes: 45,
-    author: { name: "Emily Watson" },
-    created_at: new Date(Date.now() - 7 * 24 * 3600000).toISOString(),
-  },
-  {
-    id: "4",
-    title: "API Webhooks",
-    description:
-      "Besoin de webhooks pour déclencher des actions dans notre système quand un item de roadmap change de status.",
-    status: "open",
-    category: "Developer Tools",
-    votes: 67,
-    author: { name: "David Park" },
-    created_at: new Date(Date.now() - 10 * 24 * 3600000).toISOString(),
-  },
-];
-
-const statusConfig: Record<
-  FeedbackStatus,
-  { label: string; className: string }
-> = {
+const statusConfig: Record<FeedbackStatus, { label: string; className: string }> = {
   open: { label: "OPEN", className: "bg-gray-100 text-gray-700 border-gray-200" },
   under_review: {
     label: "UNDER REVIEW",
@@ -133,16 +73,31 @@ function formatTimeAgo(dateString: string): string {
   return date.toLocaleDateString("fr-FR");
 }
 
-function FeedbackCard({ feedback }: { feedback: Feedback }) {
+type FeedbackCardProps = {
+  feedback: DemoFeedback;
+  onVote: () => void;
+  onPromote: () => void;
+  onOpenDetail: () => void;
+};
+
+function FeedbackCard({ feedback, onVote, onPromote, onOpenDetail }: FeedbackCardProps) {
   const status = statusConfig[feedback.status];
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={onOpenDetail}>
       <CardContent className="p-0">
         <div className="flex">
           {/* Vote Section */}
           <div className="flex flex-col items-center justify-center px-4 py-6 border-r bg-muted/30 min-w-[80px]">
-            <Button variant="ghost" size="icon" className="h-8 w-8 mb-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 mb-1"
+              onClick={(e) => {
+                e.stopPropagation();
+                onVote();
+              }}
+            >
               <ChevronUp className="h-5 w-5" />
             </Button>
             <span className="text-lg font-bold">{feedback.votes}</span>
@@ -186,15 +141,17 @@ function FeedbackCard({ feedback }: { feedback: Feedback }) {
                 <Badge variant="outline" className={status.className}>
                   {status.label}
                 </Badge>
-                {feedback.status === "under_review" ||
-                feedback.status === "open" ? (
-                  <Button size="sm" className="gap-1.5">
+                {(feedback.status === "under_review" || feedback.status === "open") && (
+                  <Button
+                    size="sm"
+                    className="gap-1.5"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onPromote();
+                    }}
+                  >
                     <ArrowUpRight className="h-3.5 w-3.5" />
                     Promouvoir
-                  </Button>
-                ) : (
-                  <Button variant="outline" size="sm">
-                    Voir détails
                   </Button>
                 )}
               </div>
@@ -207,18 +164,22 @@ function FeedbackCard({ feedback }: { feedback: Feedback }) {
 }
 
 export default function FeedbackPage() {
+  const { projects } = useProjects();
+  const [feedbacks, setFeedbacks] = useState<DemoFeedback[]>(demoFeedbacks);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("top_voted");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [selectedFeedback, setSelectedFeedback] = useState<DemoFeedback | null>(null);
 
   // Stats
-  const pendingReview = mockFeedback.filter(
+  const pendingReview = feedbacks.filter(
     (f) => f.status === "open" || f.status === "under_review"
   ).length;
-  const planned = mockFeedback.filter((f) => f.status === "planned").length;
-  const totalVotes = mockFeedback.reduce((sum, f) => sum + f.votes, 0);
+  const planned = feedbacks.filter((f) => f.status === "planned").length;
+  const totalVotes = feedbacks.reduce((sum, f) => sum + f.votes, 0);
 
-  const filteredFeedback = mockFeedback.filter((f) => {
+  const filteredFeedback = feedbacks.filter((f) => {
     const matchesSearch =
       f.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       f.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -226,6 +187,47 @@ export default function FeedbackPage() {
       activeCategory === "All" || f.category === activeCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const handleVote = (feedbackId: string) => {
+    setFeedbacks((prev) =>
+      prev.map((f) => (f.id === feedbackId ? { ...f, votes: f.votes + 1 } : f))
+    );
+    toast.success("Vote enregistré !");
+  };
+
+  const handleCreateFeedback = async (data: {
+    title: string;
+    description?: string;
+    category?: string;
+  }) => {
+    const newFeedback: DemoFeedback = {
+      id: `fb-${Date.now()}`,
+      title: data.title,
+      description: data.description || "",
+      status: "open",
+      category: data.category || "UX Improvements",
+      votes: 0,
+      author: { id: "current", name: "Vous" },
+      created_at: new Date().toISOString(),
+    };
+    setFeedbacks((prev) => [newFeedback, ...prev]);
+  };
+
+  const handleUpdateFeedback = (id: string, data: Partial<DemoFeedback>) => {
+    setFeedbacks((prev) => prev.map((f) => (f.id === id ? { ...f, ...data } : f)));
+    if (selectedFeedback && selectedFeedback.id === id) {
+      setSelectedFeedback({ ...selectedFeedback, ...data });
+    }
+  };
+
+  const handleDeleteFeedback = (id: string) => {
+    setFeedbacks((prev) => prev.filter((f) => f.id !== id));
+  };
+
+  const handlePromoteToRoadmap = async (feedbackId: string, projectId: string) => {
+    handleUpdateFeedback(feedbackId, { status: "planned", roadmap_item_id: "promoted" });
+    toast.success("Feedback promu vers la roadmap !");
+  };
 
   return (
     <div className="space-y-6">
@@ -242,7 +244,7 @@ export default function FeedbackPage() {
             <Download className="h-4 w-4" />
             Exporter
           </Button>
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => setShowCreateDialog(true)}>
             <Plus className="h-4 w-4" />
             Ajouter manuellement
           </Button>
@@ -288,9 +290,7 @@ export default function FeedbackPage() {
                 <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
                   Total votes
                 </p>
-                <p className="text-3xl font-bold mt-1">
-                  {totalVotes.toLocaleString()}
-                </p>
+                <p className="text-3xl font-bold mt-1">{totalVotes.toLocaleString()}</p>
               </div>
               <div className="h-10 w-10 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center">
                 <ChevronUp className="h-5 w-5" />
@@ -344,7 +344,13 @@ export default function FeedbackPage() {
       <div className="space-y-4">
         {filteredFeedback.length > 0 ? (
           filteredFeedback.map((feedback) => (
-            <FeedbackCard key={feedback.id} feedback={feedback} />
+            <FeedbackCard
+              key={feedback.id}
+              feedback={feedback}
+              onVote={() => handleVote(feedback.id)}
+              onPromote={() => setSelectedFeedback(feedback)}
+              onOpenDetail={() => setSelectedFeedback(feedback)}
+            />
           ))
         ) : (
           <Card>
@@ -358,7 +364,24 @@ export default function FeedbackPage() {
           </Card>
         )}
       </div>
+
+      {/* Dialogs */}
+      <CreateFeedbackDialog
+        open={showCreateDialog}
+        onOpenChange={setShowCreateDialog}
+        onCreateFeedback={handleCreateFeedback}
+      />
+
+      <FeedbackDetailSheet
+        open={!!selectedFeedback}
+        onOpenChange={(open) => !open && setSelectedFeedback(null)}
+        feedback={selectedFeedback}
+        projects={projects}
+        onUpdateFeedback={handleUpdateFeedback}
+        onDeleteFeedback={handleDeleteFeedback}
+        onVote={handleVote}
+        onPromoteToRoadmap={handlePromoteToRoadmap}
+      />
     </div>
   );
 }
-

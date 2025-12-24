@@ -1,112 +1,18 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { MessageSquareText, Map, Bell, FileText, Plus } from "lucide-react";
 import { StatCard } from "@/components/Dashboard/StatCard";
 import { RoadmapSnapshot } from "@/components/Dashboard/RoadmapSnapshot";
 import { RecentActivity } from "@/components/Dashboard/RecentActivity";
 import { TrendingRequests } from "@/components/Dashboard/TrendingRequests";
 import { Button } from "@/components/ui/button";
+import { CreateItemDialog } from "@/components/Dialogs/CreateItemDialog";
+import { CreateChangelogDialog } from "@/components/Dialogs/CreateChangelogDialog";
+import { useProjects } from "@/hooks/use-projects";
+import { useRoadmapItems } from "@/hooks/use-roadmap";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { RoadmapItem, Activity } from "@/types";
-
-// Données de démonstration (à remplacer par des appels API)
-const mockInProgressItems: RoadmapItem[] = [
-  {
-    id: "1",
-    project_id: "p1",
-    title: "Authentification SSO",
-    description: "Support SAML et OAuth",
-    status: "in_progress",
-    priority: "p0",
-    category: "Core",
-    labels: [{ name: "Core", color: "#ef4444" }],
-    comments_count: 5,
-    votes_count: 45,
-    position: 1,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: "2",
-    project_id: "p1",
-    title: "Mode sombre",
-    description: "Thème dark pour l'application",
-    status: "in_progress",
-    priority: "p1",
-    category: "UI/UX",
-    labels: [{ name: "UI/UX", color: "#f97316" }],
-    comments_count: 12,
-    votes_count: 128,
-    position: 2,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-];
-
-const mockPlannedItems: RoadmapItem[] = [
-  {
-    id: "3",
-    project_id: "p1",
-    title: "API Publique V2",
-    description: "Nouvelle version de l'API",
-    status: "planned",
-    priority: "p1",
-    category: "API",
-    labels: [{ name: "API", color: "#3b82f6" }],
-    comments_count: 8,
-    votes_count: 67,
-    position: 1,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: "4",
-    project_id: "p1",
-    title: "Intégration Slack",
-    description: "Notifications dans Slack",
-    status: "planned",
-    priority: "p2",
-    category: "Integration",
-    labels: [{ name: "Integration", color: "#8b5cf6" }],
-    comments_count: 3,
-    votes_count: 89,
-    position: 2,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-];
-
-const mockActivities: Activity[] = [
-  {
-    id: "a1",
-    type: "vote",
-    user_name: "Sarah J.",
-    item_title: "Mode sombre",
-    item_id: "2",
-    created_at: new Date(Date.now() - 2 * 60000).toISOString(),
-  },
-  {
-    id: "a2",
-    type: "comment",
-    user_name: "Mike T.",
-    item_title: "Authentification SSO",
-    item_id: "1",
-    content: "Est-ce que Okta sera supporté initialement ?",
-    created_at: new Date(Date.now() - 15 * 60000).toISOString(),
-  },
-  {
-    id: "a3",
-    type: "changelog",
-    user_name: "Alex (Vous)",
-    item_title: "v2.4.0 Release Notes",
-    item_id: "c1",
-    created_at: new Date(Date.now() - 60 * 60000).toISOString(),
-  },
-];
-
-const mockTrendingItems = [
-  { id: "t1", title: "Mode sombre", category: "UI Customization", votes: 45 },
-  { id: "t2", title: "API Publique V2", category: "Developer Tools", votes: 32 },
-  { id: "t3", title: "Export CSV", category: "Reporting", votes: 28 },
-  { id: "t4", title: "Intégration Slack", category: "Integrations", votes: 24 },
-];
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -116,24 +22,96 @@ function getGreeting(): string {
 }
 
 export default function DashboardPage() {
+  const { projects, isLoading: isLoadingProjects } = useProjects();
+  const firstProject = projects[0];
+  const { items, isLoading: isLoadingItems, createItem } = useRoadmapItems(firstProject?.slug || null);
+
+  const [showItemDialog, setShowItemDialog] = useState(false);
+  const [showChangelogDialog, setShowChangelogDialog] = useState(false);
+  const [userName, setUserName] = useState("Utilisateur");
+
+  // Fetch user name
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("/api/auth/user");
+        const data = await res.json();
+        if (data.user?.user_metadata?.name) {
+          setUserName(data.user.user_metadata.name);
+        } else if (data.user?.email) {
+          setUserName(data.user.email.split("@")[0]);
+        }
+      } catch {
+        // Ignore
+      }
+    };
+    fetchUser();
+  }, []);
+
+  // Calculate stats from real data
+  const inProgressItems = items.filter((i) => i.status === "in_progress");
+  const plannedItems = items.filter((i) => i.status === "planned");
+
+  // Mock activities for now (would need an API endpoint)
+  const mockActivities: Activity[] = [
+    {
+      id: "a1",
+      type: "vote",
+      user_name: "Sarah J.",
+      item_title: items[0]?.title || "Item",
+      item_id: items[0]?.id || "1",
+      created_at: new Date(Date.now() - 2 * 60000).toISOString(),
+    },
+    {
+      id: "a2",
+      type: "comment",
+      user_name: "Mike T.",
+      item_title: items[1]?.title || "Item",
+      item_id: items[1]?.id || "2",
+      content: "Super feature !",
+      created_at: new Date(Date.now() - 15 * 60000).toISOString(),
+    },
+  ];
+
+  const trendingItems = items
+    .sort((a, b) => b.votes_count - a.votes_count)
+    .slice(0, 4)
+    .map((item) => ({
+      id: item.id,
+      title: item.title,
+      category: item.category || "Feature",
+      votes: item.votes_count,
+    }));
+
+  const handleCreateChangelog = async (data: {
+    version: string;
+    title: string;
+    description?: string;
+  }) => {
+    // For now, just log - would need a changelog API
+    console.log("Creating changelog:", data);
+  };
+
+  const isLoading = isLoadingProjects || isLoadingItems;
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            {getGreeting()}, Alex
+            {getGreeting()}, {userName}
           </h1>
           <p className="text-muted-foreground">
             Voici un aperçu de la performance de votre produit.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2" onClick={() => setShowChangelogDialog(true)}>
             <FileText className="h-4 w-4" />
             Publier Changelog
           </Button>
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => setShowItemDialog(true)} disabled={!firstProject}>
             <Plus className="h-4 w-4" />
             Nouvelle demande
           </Button>
@@ -142,38 +120,57 @@ export default function DashboardPage() {
 
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-3">
-        <StatCard
-          title="Total Feedback"
-          value="1,240"
-          change={12}
-          icon={MessageSquareText}
-          iconClassName="bg-blue-50 text-blue-600"
-        />
-        <StatCard
-          title="Items Roadmap actifs"
-          value="8"
-          changeLabel="En cours"
-          icon={Map}
-          iconClassName="bg-purple-50 text-purple-600"
-        />
-        <StatCard
-          title="Abonnés Changelog"
-          value="450"
-          change={5}
-          icon={Bell}
-          iconClassName="bg-amber-50 text-amber-600"
-        />
+        {isLoading ? (
+          <>
+            <Skeleton className="h-[120px] rounded-xl" />
+            <Skeleton className="h-[120px] rounded-xl" />
+            <Skeleton className="h-[120px] rounded-xl" />
+          </>
+        ) : (
+          <>
+            <StatCard
+              title="Total Feedback"
+              value={items.length.toString()}
+              change={12}
+              icon={MessageSquareText}
+              iconClassName="bg-blue-50 text-blue-600"
+            />
+            <StatCard
+              title="Items Roadmap actifs"
+              value={inProgressItems.length.toString()}
+              changeLabel="En cours"
+              icon={Map}
+              iconClassName="bg-purple-50 text-purple-600"
+            />
+            <StatCard
+              title="Abonnés Changelog"
+              value="450"
+              change={5}
+              icon={Bell}
+              iconClassName="bg-amber-50 text-amber-600"
+            />
+          </>
+        )}
       </div>
 
       {/* Main content grid */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Left column - 2/3 */}
         <div className="lg:col-span-2 space-y-6">
-          <RoadmapSnapshot
-            inProgressItems={mockInProgressItems}
-            plannedItems={mockPlannedItems}
-          />
-          <RecentActivity activities={mockActivities} />
+          {isLoading ? (
+            <>
+              <Skeleton className="h-[300px] rounded-xl" />
+              <Skeleton className="h-[200px] rounded-xl" />
+            </>
+          ) : (
+            <>
+              <RoadmapSnapshot
+                inProgressItems={inProgressItems}
+                plannedItems={plannedItems}
+              />
+              <RecentActivity activities={mockActivities} />
+            </>
+          )}
         </div>
 
         {/* Right column - 1/3 */}
@@ -185,7 +182,6 @@ export default function DashboardPage() {
               Derniers 30 jours
             </p>
             <div className="h-32 flex items-end justify-between gap-1">
-              {/* Simple bar chart placeholder */}
               {[40, 65, 45, 80, 55, 90, 70, 85, 60, 95, 75, 100].map((h, i) => (
                 <div
                   key={i}
@@ -201,7 +197,11 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <TrendingRequests items={mockTrendingItems} />
+          {isLoading ? (
+            <Skeleton className="h-[200px] rounded-xl" />
+          ) : (
+            <TrendingRequests items={trendingItems} />
+          )}
 
           {/* Pro Tip */}
           <div className="rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 p-5">
@@ -216,6 +216,22 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Dialogs */}
+      {firstProject && (
+        <CreateItemDialog
+          open={showItemDialog}
+          onOpenChange={setShowItemDialog}
+          projectId={firstProject.id}
+          onCreateItem={createItem}
+        />
+      )}
+
+      <CreateChangelogDialog
+        open={showChangelogDialog}
+        onOpenChange={setShowChangelogDialog}
+        onCreateChangelog={handleCreateChangelog}
+      />
     </div>
   );
 }

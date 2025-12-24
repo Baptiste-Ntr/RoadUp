@@ -1,11 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Plus,
   Search,
@@ -17,104 +26,12 @@ import {
   List,
   CalendarDays,
 } from "lucide-react";
+import { useProjects } from "@/hooks/use-projects";
+import { useRoadmapItems, useRoadmapItem } from "@/hooks/use-roadmap";
+import { CreateItemDialog } from "@/components/Dialogs/CreateItemDialog";
+import { ItemDetailSheet } from "@/components/Sheets/ItemDetailSheet";
+import { toast } from "sonner";
 import type { RoadmapItem, ItemStatus } from "@/types";
-
-// Mock data
-const mockItems: RoadmapItem[] = [
-  {
-    id: "1",
-    project_id: "p1",
-    title: "Mode sombre",
-    description: "Implémenter la détection de préférence système et le toggle",
-    status: "in_progress",
-    priority: "p0",
-    category: "UX",
-    labels: [
-      { name: "HIGH PRIORITY", color: "#ef4444" },
-      { name: "UX", color: "#f97316" },
-    ],
-    comments_count: 12,
-    votes_count: 128,
-    position: 1,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: "2",
-    project_id: "p1",
-    title: "API v2 Endpoints",
-    description: "Restructurer les endpoints pour de meilleures performances",
-    status: "in_progress",
-    priority: "p1",
-    category: "DEV",
-    labels: [{ name: "DEV", color: "#3b82f6" }],
-    comments_count: 5,
-    votes_count: 45,
-    position: 2,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: "3",
-    project_id: "p1",
-    title: "Intégration Slack",
-    description: "Recevoir les notifications dans les channels Slack",
-    status: "planned",
-    priority: "p1",
-    category: "INTEGRATION",
-    labels: [{ name: "INTEGRATION", color: "#8b5cf6" }],
-    comments_count: 8,
-    votes_count: 89,
-    position: 1,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: "4",
-    project_id: "p1",
-    title: "Rôles & Permissions",
-    description: "Contrôle granulaire des accès par membre",
-    status: "planned",
-    priority: "p0",
-    category: "SECURITY",
-    labels: [{ name: "SECURITY", color: "#ef4444" }],
-    comments_count: 15,
-    votes_count: 210,
-    position: 2,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: "5",
-    project_id: "p1",
-    title: "Application iOS",
-    description: "Application native pour la gestion mobile",
-    status: "completed",
-    priority: "p2",
-    category: "MOBILE",
-    labels: [{ name: "MOBILE", color: "#10b981" }],
-    comments_count: 20,
-    votes_count: 342,
-    position: 1,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: "6",
-    project_id: "p1",
-    title: "Dashboard Analytics",
-    description: "Graphiques visuels pour l'usage des features",
-    status: "completed",
-    priority: "p2",
-    category: "ANALYTICS",
-    labels: [{ name: "ANALYTICS", color: "#06b6d4" }],
-    comments_count: 7,
-    votes_count: 56,
-    position: 2,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-];
 
 const columns: { id: ItemStatus; title: string; color: string }[] = [
   { id: "in_progress", title: "Now", color: "bg-emerald-500" },
@@ -130,18 +47,30 @@ const labelColors: Record<string, string> = {
   SECURITY: "bg-red-100 text-red-700 border-red-200",
   MOBILE: "bg-emerald-100 text-emerald-700 border-emerald-200",
   ANALYTICS: "bg-cyan-100 text-cyan-700 border-cyan-200",
+  FEATURE: "bg-green-100 text-green-700 border-green-200",
+  FEEDBACK: "bg-purple-100 text-purple-700 border-purple-200",
 };
 
-function KanbanCard({ item }: { item: RoadmapItem }) {
+type KanbanCardProps = {
+  item: RoadmapItem;
+  onOpenDetail: (item: RoadmapItem) => void;
+};
+
+function KanbanCard({ item, onOpenDetail }: KanbanCardProps) {
   return (
-    <div className="group p-4 rounded-lg border bg-card hover:shadow-md transition-all cursor-pointer">
+    <div
+      className="group p-4 rounded-lg border bg-card hover:shadow-md transition-all cursor-pointer"
+      onClick={() => onOpenDetail(item)}
+    >
       {/* Labels */}
       <div className="flex flex-wrap gap-1.5 mb-3">
         {item.labels.map((label) => (
           <Badge
             key={label.name}
             variant="outline"
-            className={`text-[10px] px-1.5 py-0 ${labelColors[label.name] || "bg-gray-100 text-gray-700"}`}
+            className={`text-[10px] px-1.5 py-0 ${
+              labelColors[label.name] || "bg-gray-100 text-gray-700"
+            }`}
           >
             {label.name}
           </Badge>
@@ -173,13 +102,14 @@ function KanbanCard({ item }: { item: RoadmapItem }) {
   );
 }
 
-function KanbanColumn({
-  column,
-  items,
-}: {
+type KanbanColumnProps = {
   column: { id: ItemStatus; title: string; color: string };
   items: RoadmapItem[];
-}) {
+  onOpenDetail: (item: RoadmapItem) => void;
+  onAddItem: (status: ItemStatus) => void;
+};
+
+function KanbanColumn({ column, items, onOpenDetail, onAddItem }: KanbanColumnProps) {
   return (
     <div className="flex-1 min-w-[300px]">
       {/* Column Header */}
@@ -199,13 +129,14 @@ function KanbanColumn({
       {/* Cards */}
       <div className="space-y-3">
         {items.map((item) => (
-          <KanbanCard key={item.id} item={item} />
+          <KanbanCard key={item.id} item={item} onOpenDetail={onOpenDetail} />
         ))}
 
         {/* Add Item Button */}
         <Button
           variant="ghost"
           className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground border-2 border-dashed"
+          onClick={() => onAddItem(column.id)}
         >
           <Plus className="h-4 w-4" />
           Ajouter un item
@@ -215,21 +146,87 @@ function KanbanColumn({
   );
 }
 
-export default function RoadmapPage() {
+function RoadmapContent() {
+  const searchParams = useSearchParams();
+  const projectSlug = searchParams.get("project");
+
+  const { projects, isLoading: isLoadingProjects } = useProjects();
+  const [selectedProject, setSelectedProject] = useState<string | null>(projectSlug);
+
+  // Update selectedProject when projectSlug changes
+  useEffect(() => {
+    if (projectSlug) {
+      setSelectedProject(projectSlug);
+    } else if (projects.length > 0 && !selectedProject) {
+      setSelectedProject(projects[0].slug);
+    }
+  }, [projectSlug, projects, selectedProject]);
+
+  const currentProject = projects.find((p) => p.slug === selectedProject);
+  const {
+    items,
+    getItemsByStatus,
+    isLoading: isLoadingItems,
+    createItem,
+    updateItem,
+    deleteItem,
+    toggleVote,
+  } = useRoadmapItems(selectedProject);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [view, setView] = useState("board");
+  const [showItemDialog, setShowItemDialog] = useState(false);
+  const [defaultStatus, setDefaultStatus] = useState<ItemStatus>("planned");
+  const [selectedItem, setSelectedItem] = useState<RoadmapItem | null>(null);
 
-  const getItemsByStatus = (status: ItemStatus) =>
-    mockItems.filter((item) => item.status === status);
+  // Get comments for selected item
+  const { comments, addComment, deleteComment } = useRoadmapItem(selectedItem?.id || null);
+
+  const handleAddItem = (status: ItemStatus) => {
+    setDefaultStatus(status);
+    setShowItemDialog(true);
+  };
+
+  const handleOpenDetail = (item: RoadmapItem) => {
+    setSelectedItem(item);
+  };
+
+  const handleUpdateItem = async (id: string, data: Partial<RoadmapItem>) => {
+    await updateItem(id, data);
+    // Update local state
+    if (selectedItem && selectedItem.id === id) {
+      setSelectedItem({ ...selectedItem, ...data });
+    }
+  };
+
+  const handleDeleteItem = async (id: string) => {
+    await deleteItem(id);
+    setSelectedItem(null);
+  };
+
+  const handleAddComment = async (content: string) => {
+    if (selectedItem) {
+      await addComment(content);
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    await deleteComment(commentId);
+  };
+
+  const handleToggleVote = async (itemId: string) => {
+    await toggleVote(itemId);
+    toast.success("Vote enregistré !");
+  };
+
+  const isLoading = isLoadingProjects || isLoadingItems;
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
-            Product Roadmap
-          </h1>
+          <h1 className="text-2xl font-bold tracking-tight">Product Roadmap</h1>
           <p className="text-muted-foreground">
             Visualisez et gérez la progression des features.
           </p>
@@ -242,22 +239,40 @@ export default function RoadmapPage() {
 
       {/* Toolbar */}
       <div className="flex items-center justify-between gap-4">
-        <Tabs value={view} onValueChange={setView}>
-          <TabsList>
-            <TabsTrigger value="board" className="gap-2">
-              <LayoutGrid className="h-4 w-4" />
-              Board
-            </TabsTrigger>
-            <TabsTrigger value="list" className="gap-2">
-              <List className="h-4 w-4" />
-              Liste
-            </TabsTrigger>
-            <TabsTrigger value="timeline" className="gap-2">
-              <CalendarDays className="h-4 w-4" />
-              Timeline
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
+        <div className="flex items-center gap-4">
+          <Tabs value={view} onValueChange={setView}>
+            <TabsList>
+              <TabsTrigger value="board" className="gap-2">
+                <LayoutGrid className="h-4 w-4" />
+                Board
+              </TabsTrigger>
+              <TabsTrigger value="list" className="gap-2">
+                <List className="h-4 w-4" />
+                Liste
+              </TabsTrigger>
+              <TabsTrigger value="timeline" className="gap-2">
+                <CalendarDays className="h-4 w-4" />
+                Timeline
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          {/* Project Selector */}
+          {projects.length > 0 && (
+            <Select value={selectedProject || ""} onValueChange={setSelectedProject}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Sélectionner un projet" />
+              </SelectTrigger>
+              <SelectContent>
+                {projects.map((project) => (
+                  <SelectItem key={project.id} value={project.slug}>
+                    {project.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        </div>
 
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -272,7 +287,11 @@ export default function RoadmapPage() {
           <Button variant="outline" size="icon">
             <Filter className="h-4 w-4" />
           </Button>
-          <Button className="gap-2">
+          <Button
+            className="gap-2"
+            onClick={() => handleAddItem("planned")}
+            disabled={!currentProject}
+          >
             <Plus className="h-4 w-4" />
             Nouvel item
           </Button>
@@ -282,13 +301,25 @@ export default function RoadmapPage() {
       {/* Kanban Board */}
       {view === "board" && (
         <div className="flex gap-6 overflow-x-auto pb-4">
-          {columns.map((column) => (
-            <KanbanColumn
-              key={column.id}
-              column={column}
-              items={getItemsByStatus(column.id)}
-            />
-          ))}
+          {isLoading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex-1 min-w-[300px] space-y-3">
+                <Skeleton className="h-8 w-full" />
+                <Skeleton className="h-32 w-full" />
+                <Skeleton className="h-32 w-full" />
+              </div>
+            ))
+          ) : (
+            columns.map((column) => (
+              <KanbanColumn
+                key={column.id}
+                column={column}
+                items={getItemsByStatus(column.id)}
+                onOpenDetail={handleOpenDetail}
+                onAddItem={handleAddItem}
+              />
+            ))
+          )}
         </div>
       )}
 
@@ -313,7 +344,37 @@ export default function RoadmapPage() {
           </p>
         </div>
       )}
+
+      {/* Dialogs & Sheets */}
+      {currentProject && (
+        <CreateItemDialog
+          open={showItemDialog}
+          onOpenChange={setShowItemDialog}
+          projectId={currentProject.id}
+          defaultStatus={defaultStatus}
+          onCreateItem={createItem}
+        />
+      )}
+
+      <ItemDetailSheet
+        open={!!selectedItem}
+        onOpenChange={(open) => !open && setSelectedItem(null)}
+        item={selectedItem}
+        comments={comments}
+        onUpdateItem={handleUpdateItem}
+        onDeleteItem={handleDeleteItem}
+        onAddComment={handleAddComment}
+        onDeleteComment={handleDeleteComment}
+        onToggleVote={handleToggleVote}
+      />
     </div>
   );
 }
 
+export default function RoadmapPage() {
+  return (
+    <Suspense fallback={<div className="space-y-4"><Skeleton className="h-8 w-full" /><Skeleton className="h-64 w-full" /></div>}>
+      <RoadmapContent />
+    </Suspense>
+  );
+}

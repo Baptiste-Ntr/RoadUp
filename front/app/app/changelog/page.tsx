@@ -13,64 +13,15 @@ import {
   Zap,
   Bug,
   Check,
+  Trash2,
+  Pencil,
 } from "lucide-react";
+import { CreateChangelogDialog } from "@/components/Dialogs/CreateChangelogDialog";
+import { ConfirmDialog } from "@/components/Dialogs/ConfirmDialog";
+import { toast } from "sonner";
+import { demoChangelogs, type DemoChangelog } from "@/lib/demo-data";
 
 type ChangelogType = "major" | "improvement" | "bugfix";
-
-type Changelog = {
-  id: string;
-  version: string;
-  title: string;
-  description: string;
-  type: ChangelogType;
-  highlights: string[];
-  published_at: string;
-  is_draft: boolean;
-};
-
-const mockChangelogs: Changelog[] = [
-  {
-    id: "1",
-    version: "v3.0.0",
-    title: "Le Nouveau Dashboard",
-    description:
-      "Nous avons complètement revu le dashboard pour vous donner de meilleurs insights en un coup d'œil. La nouvelle mise en page est entièrement personnalisable et supporte nativement le mode sombre.",
-    type: "major",
-    highlights: [
-      "Données temps réel : Les métriques se mettent à jour instantanément via websockets.",
-      "Widgets personnalisés : Glissez-déposez parmi 20+ types de widgets.",
-      "Options d'export : Téléchargez les rapports en PDF, CSV ou PNG.",
-    ],
-    published_at: new Date(Date.now() - 2 * 24 * 3600000).toISOString(),
-    is_draft: false,
-  },
-  {
-    id: "2",
-    version: "v2.9.1",
-    title: "Boost de Performance API",
-    description:
-      "Nous avons optimisé nos endpoints API principaux, résultant en une réduction de 40% de la latence pour les requêtes de données. Cette mise à jour cible spécifiquement les endpoints `/v1/users` et `/v1/projects`.",
-    type: "improvement",
-    highlights: [],
-    published_at: new Date(Date.now() - 14 * 24 * 3600000).toISOString(),
-    is_draft: false,
-  },
-  {
-    id: "3",
-    version: "v2.9.0",
-    title: "Corrections de bugs",
-    description: "Plusieurs corrections de bugs signalés par la communauté.",
-    type: "bugfix",
-    highlights: [
-      "Correction du timeout de login sur Safari.",
-      "Résolution du bug de rendu des graphiques sur mobile.",
-      "Correction d'une typo dans les notifications email.",
-      "Correction du problème de z-index des modales.",
-    ],
-    published_at: new Date(Date.now() - 30 * 24 * 3600000).toISOString(),
-    is_draft: false,
-  },
-];
 
 const typeConfig: Record<
   ChangelogType,
@@ -101,18 +52,39 @@ function formatDate(dateString: string): string {
   });
 }
 
-function ChangelogCard({ changelog }: { changelog: Changelog }) {
+type ChangelogCardProps = {
+  changelog: DemoChangelog;
+  onEdit: () => void;
+  onDelete: () => void;
+};
+
+function ChangelogCard({ changelog, onEdit, onDelete }: ChangelogCardProps) {
   const config = typeConfig[changelog.type];
   const Icon = config.icon;
 
   return (
-    <div className="relative pl-8 pb-12 last:pb-0">
+    <div className="relative pl-8 pb-12 last:pb-0 group">
       {/* Timeline dot */}
       <div className="absolute left-0 top-1 w-4 h-4 rounded-full bg-primary border-4 border-background" />
       {/* Timeline line */}
-      <div className="absolute left-[7px] top-5 bottom-0 w-0.5 bg-border last:hidden" />
+      <div className="absolute left-[7px] top-5 bottom-0 w-0.5 bg-border" />
 
-      <Card>
+      <Card className="relative">
+        {/* Actions */}
+        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onEdit}>
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-destructive"
+            onClick={onDelete}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+
         <CardContent className="p-6">
           {/* Header */}
           <div className="flex items-start justify-between mb-4">
@@ -123,6 +95,11 @@ function ChangelogCard({ changelog }: { changelog: Changelog }) {
               <span className="text-sm text-muted-foreground">
                 {formatDate(changelog.published_at)}
               </span>
+              {changelog.is_draft && (
+                <Badge variant="secondary" className="text-xs">
+                  Brouillon
+                </Badge>
+              )}
             </div>
             <Badge variant="outline" className={config.className}>
               <Icon className="h-3 w-3 mr-1" />
@@ -152,17 +129,13 @@ function ChangelogCard({ changelog }: { changelog: Changelog }) {
           )}
 
           {/* Tags */}
-          {changelog.type === "improvement" && (
+          {changelog.tags.length > 0 && (
             <div className="flex gap-2 mt-4">
-              <Badge variant="outline" className="text-xs">
-                api
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                performance
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                backend
-              </Badge>
+              {changelog.tags.map((tag) => (
+                <Badge key={tag} variant="outline" className="text-xs">
+                  {tag}
+                </Badge>
+              ))}
             </div>
           )}
         </CardContent>
@@ -172,17 +145,32 @@ function ChangelogCard({ changelog }: { changelog: Changelog }) {
 }
 
 export default function ChangelogPage() {
+  const [changelogs, setChangelogs] = useState<DemoChangelog[]>(demoChangelogs);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [deleteChangelog, setDeleteChangelog] = useState<DemoChangelog | null>(null);
 
   const filters = [
-    { id: "all", label: "Toutes les mises à jour", count: mockChangelogs.length },
-    { id: "major", label: "Nouvelles fonctionnalités", count: 1 },
-    { id: "improvement", label: "Améliorations", count: 1 },
-    { id: "bugfix", label: "Corrections", count: 1 },
+    { id: "all", label: "Toutes les mises à jour", count: changelogs.length },
+    {
+      id: "major",
+      label: "Nouvelles fonctionnalités",
+      count: changelogs.filter((c) => c.type === "major").length,
+    },
+    {
+      id: "improvement",
+      label: "Améliorations",
+      count: changelogs.filter((c) => c.type === "improvement").length,
+    },
+    {
+      id: "bugfix",
+      label: "Corrections",
+      count: changelogs.filter((c) => c.type === "bugfix").length,
+    },
   ];
 
-  const filteredChangelogs = mockChangelogs.filter((changelog) => {
+  const filteredChangelogs = changelogs.filter((changelog) => {
     const matchesSearch =
       changelog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       changelog.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -190,6 +178,35 @@ export default function ChangelogPage() {
       activeFilter === "all" || changelog.type === activeFilter;
     return matchesSearch && matchesFilter;
   });
+
+  const handleCreateChangelog = async (data: {
+    version: string;
+    title: string;
+    description?: string;
+    type?: ChangelogType;
+    highlights?: string[];
+    tags?: string[];
+    is_draft?: boolean;
+  }) => {
+    const newChangelog: DemoChangelog = {
+      id: `cl-${Date.now()}`,
+      version: data.version,
+      title: data.title,
+      description: data.description || "",
+      type: data.type || "improvement",
+      highlights: data.highlights || [],
+      tags: data.tags || [],
+      published_at: new Date().toISOString(),
+      is_draft: data.is_draft || false,
+    };
+    setChangelogs((prev) => [newChangelog, ...prev]);
+  };
+
+  const handleDeleteChangelog = async () => {
+    if (!deleteChangelog) return;
+    setChangelogs((prev) => prev.filter((c) => c.id !== deleteChangelog.id));
+    toast.success("Changelog supprimé !");
+  };
 
   return (
     <div className="space-y-6">
@@ -206,7 +223,7 @@ export default function ChangelogPage() {
             <Eye className="h-4 w-4" />
             Voir la page publique
           </Button>
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => setShowCreateDialog(true)}>
             <Plus className="h-4 w-4" />
             Nouvelle version
           </Button>
@@ -263,7 +280,14 @@ export default function ChangelogPage() {
           {filteredChangelogs.length > 0 ? (
             <div className="relative">
               {filteredChangelogs.map((changelog) => (
-                <ChangelogCard key={changelog.id} changelog={changelog} />
+                <ChangelogCard
+                  key={changelog.id}
+                  changelog={changelog}
+                  onEdit={() => {
+                    toast.info("Édition en cours de développement");
+                  }}
+                  onDelete={() => setDeleteChangelog(changelog)}
+                />
               ))}
             </div>
           ) : (
@@ -279,7 +303,23 @@ export default function ChangelogPage() {
           )}
         </div>
       </div>
+
+      {/* Dialogs */}
+      <CreateChangelogDialog
+        open={showCreateDialog}
+        onOpenChange={setShowCreateDialog}
+        onCreateChangelog={handleCreateChangelog}
+      />
+
+      <ConfirmDialog
+        open={!!deleteChangelog}
+        onOpenChange={(open) => !open && setDeleteChangelog(null)}
+        title="Supprimer le changelog"
+        description={`Êtes-vous sûr de vouloir supprimer "${deleteChangelog?.title}" ? Cette action est irréversible.`}
+        confirmLabel="Supprimer"
+        variant="danger"
+        onConfirm={handleDeleteChangelog}
+      />
     </div>
   );
 }
-
