@@ -9,7 +9,7 @@ import { TrendingRequests } from "@/components/Dashboard/TrendingRequests";
 import { Button } from "@/components/ui/button";
 import { CreateItemDialog } from "@/components/Dialogs/CreateItemDialog";
 import { CreateChangelogDialog } from "@/components/Dialogs/CreateChangelogDialog";
-import { useDemoContext } from "@/contexts/DemoContext";
+import { useAppContext } from "@/contexts/AppContext";
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -20,7 +20,7 @@ function getGreeting(): string {
 
 export default function DemoDashboardPage() {
   const { user, projects, roadmapItems, activities, stats, trendingItems, createItem, createChangelog } =
-    useDemoContext();
+    useAppContext();
 
   const [showItemDialog, setShowItemDialog] = useState(false);
   const [showChangelogDialog, setShowChangelogDialog] = useState(false);

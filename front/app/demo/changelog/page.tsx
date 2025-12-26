@@ -16,7 +16,7 @@ import {
   Trash2,
   Pencil,
 } from "lucide-react";
-import { useDemoContext } from "@/contexts/DemoContext";
+import { useAppContext } from "@/contexts/AppContext";
 import { CreateChangelogDialog } from "@/components/Dialogs/CreateChangelogDialog";
 import { ConfirmDialog } from "@/components/Dialogs/ConfirmDialog";
 import { toast } from "sonner";
@@ -146,7 +146,7 @@ function ChangelogCard({ changelog, onEdit, onDelete }: ChangelogCardProps) {
 }
 
 export default function DemoChangelogPage() {
-  const { changelogs, createChangelog, deleteChangelog } = useDemoContext();
+  const { changelogs, createChangelog, deleteChangelog } = useAppContext();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");

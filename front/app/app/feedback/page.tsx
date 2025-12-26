@@ -24,9 +24,9 @@ import {
 } from "lucide-react";
 import { CreateFeedbackDialog } from "@/components/Dialogs/CreateFeedbackDialog";
 import { FeedbackDetailSheet } from "@/components/Sheets/FeedbackDetailSheet";
-import { useProjects } from "@/hooks/use-projects";
+import { useAppContext } from "@/contexts/AppContext";
 import { toast } from "sonner";
-import { demoFeedbacks, type DemoFeedback } from "@/lib/demo-data";
+import type { DemoFeedback } from "@/lib/demo-data";
 
 type FeedbackStatus = "open" | "under_review" | "planned" | "completed" | "closed";
 
@@ -164,8 +164,16 @@ function FeedbackCard({ feedback, onVote, onPromote, onOpenDetail }: FeedbackCar
 }
 
 export default function FeedbackPage() {
-  const { projects } = useProjects();
-  const [feedbacks, setFeedbacks] = useState<DemoFeedback[]>(demoFeedbacks);
+  const {
+    feedbacks,
+    projects,
+    createFeedback,
+    updateFeedback,
+    deleteFeedback,
+    voteFeedback,
+    promoteToRoadmap,
+  } = useAppContext();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("top_voted");
   const [activeCategory, setActiveCategory] = useState("All");
@@ -189,9 +197,7 @@ export default function FeedbackPage() {
   });
 
   const handleVote = (feedbackId: string) => {
-    setFeedbacks((prev) =>
-      prev.map((f) => (f.id === feedbackId ? { ...f, votes: f.votes + 1 } : f))
-    );
+    voteFeedback(feedbackId);
     toast.success("Vote enregistré !");
   };
 
@@ -200,33 +206,25 @@ export default function FeedbackPage() {
     description?: string;
     category?: string;
   }) => {
-    const newFeedback: DemoFeedback = {
-      id: `fb-${Date.now()}`,
-      title: data.title,
-      description: data.description || "",
-      status: "open",
-      category: data.category || "UX Improvements",
-      votes: 0,
-      author: { id: "current", name: "Vous" },
-      created_at: new Date().toISOString(),
-    };
-    setFeedbacks((prev) => [newFeedback, ...prev]);
+    await createFeedback(data);
   };
 
   const handleUpdateFeedback = (id: string, data: Partial<DemoFeedback>) => {
-    setFeedbacks((prev) => prev.map((f) => (f.id === id ? { ...f, ...data } : f)));
+    updateFeedback(id, data);
     if (selectedFeedback && selectedFeedback.id === id) {
       setSelectedFeedback({ ...selectedFeedback, ...data });
     }
   };
 
   const handleDeleteFeedback = (id: string) => {
-    setFeedbacks((prev) => prev.filter((f) => f.id !== id));
+    deleteFeedback(id);
+    setSelectedFeedback(null);
   };
 
   const handlePromoteToRoadmap = async (feedbackId: string, projectId: string) => {
-    handleUpdateFeedback(feedbackId, { status: "planned", roadmap_item_id: "promoted" });
+    await promoteToRoadmap(feedbackId, projectId);
     toast.success("Feedback promu vers la roadmap !");
+    setSelectedFeedback(null);
   };
 
   return (

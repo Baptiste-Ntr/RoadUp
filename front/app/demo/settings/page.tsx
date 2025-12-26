@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { useDemoContext } from "@/contexts/DemoContext";
+import { useAppContext } from "@/contexts/AppContext";
 import { toast } from "sonner";
 import {
   User,
@@ -39,7 +39,7 @@ const mockInvoices = [
 ];
 
 export default function DemoSettingsPage() {
-  const { user, planLimits } = useDemoContext();
+  const { user, planLimits } = useAppContext();
 
   const [activeTab, setActiveTab] = useState<SettingsTab>("profile");
   const [formData, setFormData] = useState({

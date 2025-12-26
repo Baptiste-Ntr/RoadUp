@@ -22,7 +22,7 @@ import {
   MessageSquare,
   ArrowUpRight,
 } from "lucide-react";
-import { useDemoContext } from "@/contexts/DemoContext";
+import { useAppContext } from "@/contexts/AppContext";
 import { CreateFeedbackDialog } from "@/components/Dialogs/CreateFeedbackDialog";
 import { FeedbackDetailSheet } from "@/components/Sheets/FeedbackDetailSheet";
 import { toast } from "sonner";
@@ -172,7 +172,7 @@ export default function DemoFeedbackPage() {
     deleteFeedback,
     voteFeedback,
     promoteToRoadmap,
-  } = useDemoContext();
+  } = useAppContext();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("top_voted");

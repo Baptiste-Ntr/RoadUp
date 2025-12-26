@@ -1,6 +1,6 @@
 "use client";
 
-import { DemoProvider } from "@/contexts/DemoContext";
+import { AppProvider } from "@/contexts/AppContext";
 import { Sidebar } from "@/components/Common/Sidebar";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
@@ -11,7 +11,7 @@ import { Sparkles } from "lucide-react";
 
 export default function DemoLayout({ children }: { children: React.ReactNode }) {
   return (
-    <DemoProvider>
+    <AppProvider isDemo={true}>
       <SidebarProvider>
         <Sidebar basePath="/demo" />
         <SidebarInset>
@@ -44,7 +44,7 @@ export default function DemoLayout({ children }: { children: React.ReactNode }) 
           <main className="flex-1 p-6">{children}</main>
         </SidebarInset>
       </SidebarProvider>
-    </DemoProvider>
+    </AppProvider>
   );
 }
 

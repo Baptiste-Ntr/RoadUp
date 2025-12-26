@@ -73,7 +73,7 @@ function formatTimeAgo(dateString: string): string {
 }
 
 export default function DemoProjectsPage() {
-  const { projects, createProject, deleteProject } = useDemoContext();
+  const { projects, createProject, deleteProject } = useAppContext();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [ownerFilter, setOwnerFilter] = useState("anyone");

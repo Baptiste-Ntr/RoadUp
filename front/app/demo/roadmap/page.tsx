@@ -26,7 +26,7 @@ import {
   List,
   CalendarDays,
 } from "lucide-react";
-import { useDemoContext } from "@/contexts/DemoContext";
+import { useAppContext } from "@/contexts/AppContext";
 import { CreateItemDialog } from "@/components/Dialogs/CreateItemDialog";
 import { ItemDetailSheet } from "@/components/Sheets/ItemDetailSheet";
 import { toast } from "sonner";
@@ -157,7 +157,7 @@ function RoadmapContent() {
     deleteItem,
     createComment,
     deleteComment,
-  } = useDemoContext();
+  } = useAppContext();
 
   const [selectedProjectSlug, setSelectedProjectSlug] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");

@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/middleware";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { supabase, response } = createClient(request);
 
   // Rafraîchir la session si nécessaire

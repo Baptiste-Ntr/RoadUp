@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { MessageSquareText, Map, Bell, FileText, Plus } from "lucide-react";
 import { StatCard } from "@/components/Dashboard/StatCard";
 import { RoadmapSnapshot } from "@/components/Dashboard/RoadmapSnapshot";
@@ -9,10 +9,8 @@ import { TrendingRequests } from "@/components/Dashboard/TrendingRequests";
 import { Button } from "@/components/ui/button";
 import { CreateItemDialog } from "@/components/Dialogs/CreateItemDialog";
 import { CreateChangelogDialog } from "@/components/Dialogs/CreateChangelogDialog";
-import { useProjects } from "@/hooks/use-projects";
-import { useRoadmapItems } from "@/hooks/use-roadmap";
+import { useAppContext } from "@/contexts/AppContext";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { RoadmapItem, Activity } from "@/types";
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -22,74 +20,32 @@ function getGreeting(): string {
 }
 
 export default function DashboardPage() {
-  const { projects, isLoading: isLoadingProjects } = useProjects();
-  const firstProject = projects[0];
-  const { items, isLoading: isLoadingItems, createItem } = useRoadmapItems(firstProject?.slug || null);
+  const {
+    user,
+    projects,
+    roadmapItems,
+    activities,
+    stats,
+    trendingItems,
+    createItem,
+    createChangelog,
+    isLoadingProjects,
+    isLoadingItems,
+  } = useAppContext();
 
   const [showItemDialog, setShowItemDialog] = useState(false);
   const [showChangelogDialog, setShowChangelogDialog] = useState(false);
-  const [userName, setUserName] = useState("Utilisateur");
 
-  // Fetch user name
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch("/api/auth/user");
-        const data = await res.json();
-        if (data.user?.user_metadata?.name) {
-          setUserName(data.user.user_metadata.name);
-        } else if (data.user?.email) {
-          setUserName(data.user.email.split("@")[0]);
-        }
-      } catch {
-        // Ignore
-      }
-    };
-    fetchUser();
-  }, []);
-
-  // Calculate stats from real data
-  const inProgressItems = items.filter((i) => i.status === "in_progress");
-  const plannedItems = items.filter((i) => i.status === "planned");
-
-  // Mock activities for now (would need an API endpoint)
-  const mockActivities: Activity[] = [
-    {
-      id: "a1",
-      type: "vote",
-      user_name: "Sarah J.",
-      item_title: items[0]?.title || "Item",
-      item_id: items[0]?.id || "1",
-      created_at: new Date(Date.now() - 2 * 60000).toISOString(),
-    },
-    {
-      id: "a2",
-      type: "comment",
-      user_name: "Mike T.",
-      item_title: items[1]?.title || "Item",
-      item_id: items[1]?.id || "2",
-      content: "Super feature !",
-      created_at: new Date(Date.now() - 15 * 60000).toISOString(),
-    },
-  ];
-
-  const trendingItems = items
-    .sort((a, b) => b.votes_count - a.votes_count)
-    .slice(0, 4)
-    .map((item) => ({
-      id: item.id,
-      title: item.title,
-      category: item.category || "Feature",
-      votes: item.votes_count,
-    }));
+  const firstProject = projects[0];
+  const inProgressItems = roadmapItems.filter((i) => i.status === "in_progress");
+  const plannedItems = roadmapItems.filter((i) => i.status === "planned");
 
   const handleCreateChangelog = async (data: {
     version: string;
     title: string;
     description?: string;
   }) => {
-    // For now, just log - would need a changelog API
-    console.log("Creating changelog:", data);
+    await createChangelog(data);
   };
 
   const isLoading = isLoadingProjects || isLoadingItems;
@@ -100,7 +56,7 @@ export default function DashboardPage() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            {getGreeting()}, {userName}
+            {getGreeting()}, {user?.name || "Utilisateur"}
           </h1>
           <p className="text-muted-foreground">
             Voici un aperçu de la performance de votre produit.
@@ -111,7 +67,7 @@ export default function DashboardPage() {
             <FileText className="h-4 w-4" />
             Publier Changelog
           </Button>
-          <Button className="gap-2" onClick={() => setShowItemDialog(true)} disabled={!firstProject}>
+          <Button className="gap-2" onClick={() => setShowItemDialog(true)}>
             <Plus className="h-4 w-4" />
             Nouvelle demande
           </Button>
@@ -130,22 +86,22 @@ export default function DashboardPage() {
           <>
             <StatCard
               title="Total Feedback"
-              value={items.length.toString()}
-              change={12}
+              value={stats.total_feedback.toLocaleString()}
+              change={stats.feedback_change}
               icon={MessageSquareText}
               iconClassName="bg-blue-50 text-blue-600"
             />
             <StatCard
               title="Items Roadmap actifs"
-              value={inProgressItems.length.toString()}
-              changeLabel="En cours"
+              value={stats.active_items.toString()}
+              changeLabel={`${stats.items_in_progress} en cours`}
               icon={Map}
               iconClassName="bg-purple-50 text-purple-600"
             />
             <StatCard
               title="Abonnés Changelog"
-              value="450"
-              change={5}
+              value={stats.changelog_subscribers.toString()}
+              change={stats.subscribers_change}
               icon={Bell}
               iconClassName="bg-amber-50 text-amber-600"
             />
@@ -168,7 +124,7 @@ export default function DashboardPage() {
                 inProgressItems={inProgressItems}
                 plannedItems={plannedItems}
               />
-              <RecentActivity activities={mockActivities} />
+              <RecentActivity activities={activities} />
             </>
           )}
         </div>
