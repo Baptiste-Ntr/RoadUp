@@ -2,11 +2,23 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AppProvider } from "@/contexts/AppContext";
+import { AppProvider, useAppContext } from "@/contexts/AppContext";
 import { Sidebar } from "@/components/Common/Sidebar";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
+import { ProjectSelector } from "@/components/Header/ProjectSelector";
+
+// Composant interne qui utilise le contexte
+function AppHeader() {
+  const { projects } = useAppContext();
+  
+  return (
+    <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6">
+      {/* <SidebarTrigger className="-ml-2" /> */}
+      <ProjectSelector projects={projects} />
+    </header>
+  );
+}
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -54,10 +66,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <SidebarProvider>
         <Sidebar />
         <SidebarInset>
-          <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6">
-            <SidebarTrigger className="-ml-2" />
-            <Separator orientation="vertical" className="h-6" />
-          </header>
+          <AppHeader />
           <main className="w-[calc(100vw-256px)] h-[calc(100vh-56px)] p-6">{children}</main>
         </SidebarInset>
       </SidebarProvider>

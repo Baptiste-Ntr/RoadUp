@@ -15,7 +15,7 @@ import { Empty, EmptyHeader, EmptyMedia, EmptyDescription, EmptyTitle, EmptyCont
 import { IconFolderCode } from "@tabler/icons-react"
 import { CreateProjectDialog } from "@/components/Dialogs/CreateProjectDialog";
 import { toast } from "sonner";
-import { useProjects } from "@/hooks/use-projects";
+import { useProject, useProjects } from "@/hooks/use-projects";
 import { Spinner } from "@/components/ui/spinner";
 
 function getGreeting(): string {
@@ -30,9 +30,12 @@ export default function DashboardPage() {
     user,
     projects,
     isLoadingProjects,
+    activeProject
   } = useAppContext();
   const [showItemDialog, setShowItemDialog] = useState(false);
   const [showChangelogDialog, setShowChangelogDialog] = useState(false);
+
+  const {project} = useProject(activeProject)
 
   // const inProgressItems = roadmapItems.filter((i) => i.status === "in_progress");
   // const plannedItems = roadmapItems.filter((i) => i.status === "planned");
@@ -106,7 +109,7 @@ export default function DashboardPage() {
             {getGreeting()}, {user?.name || "Utilisateur"}
           </h1>
           <p className="text-muted-foreground">
-            Voici un aperçu de la performance de votre produit.
+            Voici un aperçu de la performance de votre projet {project?.name}.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -183,7 +186,7 @@ export default function DashboardPage() {
         {/* Right column - 1/3 */}
         <div className="space-y-6">
           {/* Feedback Volume Chart placeholder */}
-          <div className="rounded-xl border bg-card p-6">
+          {/* <div className="rounded-xl border bg-card p-6">
             <h3 className="font-semibold mb-1">Volume Feedback</h3>
             <p className="text-sm text-muted-foreground mb-4">
               Derniers 30 jours
@@ -202,7 +205,7 @@ export default function DashboardPage() {
               <span>15 Déc</span>
               <span>30 Déc</span>
             </div>
-          </div>
+          </div> */}
 
           {isLoading ? (
             <Skeleton className="h-[200px] rounded-xl" />
@@ -215,7 +218,7 @@ export default function DashboardPage() {
           }
 
           {/* Pro Tip */}
-          <div className="rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 p-5">
+          {/* <div className="rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 p-5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/20 text-primary mb-3">
               💡
             </div>
@@ -224,7 +227,7 @@ export default function DashboardPage() {
               Partagez votre roadmap publique avec vos clients pour augmenter
               l&apos;engagement et collecter plus de feedback.
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
 

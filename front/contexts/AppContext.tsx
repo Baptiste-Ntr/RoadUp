@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, ReactNode, useMemo } from "react";
+import React, { createContext, useContext, ReactNode, useMemo, useState, Dispatch, SetStateAction } from "react";
 import { usePathname } from "next/navigation";
 import { useProjects } from "@/hooks/use-projects";
 import { useAuth } from "@/hooks/use-auth";
@@ -38,6 +38,8 @@ type AppContextType = {
   isLoadingProjects: boolean;
   createProject: (data: { name: string; description?: string; is_public?: boolean }) => Promise<ProjectWithRole>;
   refreshProjects: () => Promise<void>;
+  activeProject: Project["id"] | null;
+  setActiveProject: Dispatch<SetStateAction<Project["id"] | null>>;
 };
 
 // ============================================
@@ -82,6 +84,9 @@ export function AppProvider({ children, isDemo = false }: { children: ReactNode;
   // ============================================
   // Projects
   // ============================================
+
+  const [activeProject, setActiveProject] = useState<Project["id"] | null>(null)
+
   const projects: ProjectWithRole[] = useMemo(() => {
     if (isDemoMode) {
       return demoProjects;
@@ -146,6 +151,8 @@ export function AppProvider({ children, isDemo = false }: { children: ReactNode;
     isLoadingProjects: isLoadingApiProjects,
     createProject,
     refreshProjects,
+    activeProject,
+    setActiveProject,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
