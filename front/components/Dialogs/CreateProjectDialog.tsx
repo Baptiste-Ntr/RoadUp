@@ -16,21 +16,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useProjects } from "@/hooks/use-projects";
 
 type CreateProjectDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreateProject: (data: {
-    name: string;
-    description?: string;
-    is_public?: boolean;
-  }) => Promise<unknown>;
 };
 
 export function CreateProjectDialog({
   open,
   onOpenChange,
-  onCreateProject,
 }: CreateProjectDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -38,6 +33,8 @@ export function CreateProjectDialog({
     description: "",
     is_public: true,
   });
+
+  const {createProject} = useProjects()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +46,7 @@ export function CreateProjectDialog({
 
     setIsLoading(true);
     try {
-      await onCreateProject({
+      await createProject({
         name: formData.name.trim(),
         description: formData.description.trim() || undefined,
         is_public: formData.is_public,

@@ -1,16 +1,8 @@
 "use client";
 
-import useSWR, { mutate } from "swr";
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.error || "Erreur lors du chargement");
-  }
-  const data = await res.json();
-  return data.data;
-};
+import { useState, useEffect, useCallback } from "react";
+import { items as apiItems, votes as apiVotes, plan as apiPlan } from "@/lib/api";
+import type { PlanLimits } from "@/types";
 
 // Note: Pour le MVP, les feedbacks sont stockés comme des RoadmapItems avec un flag spécial
 // ou dans une table séparée. Pour l'instant, on simule avec les items de type "feedback"
@@ -31,75 +23,84 @@ export type Feedback = {
 // En production, il faudrait une table feedback séparée
 
 export function useFeedback() {
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   // Pour le MVP, on retourne un état vide
-  // En production: const { data, error, isLoading } = useSWR<Feedback[]>("/api/feedback", fetcher);
-  
-  const createFeedback = async (feedbackData: {
-    title: string;
-    description?: string;
-    category?: string;
-    author_email?: string;
-  }) => {
-    // Pour le MVP, créer comme un item roadmap avec status spécial
-    const res = await fetch("/api/items", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...feedbackData,
-        status: "planned",
-        priority: "p2",
-        labels: [{ name: "FEEDBACK", color: "#8b5cf6" }],
-      }),
-    });
+  // En production, il faudrait charger depuis une API dédiée
 
-    const result = await res.json();
+  // Créer un feedback
+  const createFeedback = useCallback(
+    async (feedbackData: {
+      title: string;
+      description?: string;
+      category?: string;
+      author_email?: string;
+    }) => {
+      try {
+        // Pour le MVP, créer comme un item roadmap avec status spécial
+        const result = await apiItems.create({
+          project_id: "", // Sera rempli par l'API si nécessaire
+          title: feedbackData.title,
+          description: feedbackData.description,
+          status: "planned",
+          priority: "p2",
+          category: feedbackData.category,
+          labels: [{ name: "FEEDBACK", color: "#8b5cf6" }],
+        });
 
-    if (!res.ok) {
-      throw new Error(result.error || "Erreur lors de la création");
+        if (result.error) {
+          throw new Error(result.error);
+        }
+
+        return result.data;
+      } catch (err) {
+        throw new Error(err instanceof Error ? err.message : "Erreur lors de la création");
+      }
+    },
+    []
+  );
+
+  // Voter pour un feedback
+  const voteFeedback = useCallback(async (feedbackId: string) => {
+    try {
+      const result = await apiVotes.toggle(feedbackId);
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      return result.data!.voted;
+    } catch (err) {
+      throw new Error(err instanceof Error ? err.message : "Erreur lors du vote");
     }
+  }, []);
 
-    return result.data;
-  };
+  // Promouvoir un feedback vers la roadmap
+  const promoteToRoadmap = useCallback(
+    async (feedbackId: string, projectId: string) => {
+      try {
+        // Mettre à jour le feedback pour le lier à un item roadmap
+        const result = await apiItems.update(feedbackId, {
+          project_id: projectId,
+          status: "planned",
+        });
 
-  const voteFeedback = async (feedbackId: string) => {
-    const res = await fetch(`/api/votes/${feedbackId}`, {
-      method: "POST",
-    });
+        if (result.error) {
+          throw new Error(result.error);
+        }
 
-    const result = await res.json();
-
-    if (!res.ok) {
-      throw new Error(result.error || "Erreur lors du vote");
-    }
-
-    return result.voted as boolean;
-  };
-
-  const promoteToRoadmap = async (feedbackId: string, projectId: string) => {
-    // Mettre à jour le feedback pour le lier à un item roadmap
-    const res = await fetch(`/api/items/${feedbackId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        project_id: projectId,
-        status: "planned",
-      }),
-    });
-
-    const result = await res.json();
-
-    if (!res.ok) {
-      throw new Error(result.error || "Erreur lors de la promotion");
-    }
-
-    mutate(`/api/projects/${projectId}`);
-    return result.data;
-  };
+        return result.data!;
+      } catch (err) {
+        throw new Error(err instanceof Error ? err.message : "Erreur lors de la promotion");
+      }
+    },
+    []
+  );
 
   return {
-    feedbacks: [] as Feedback[],
-    isLoading: false,
-    error: undefined as string | undefined,
+    feedbacks,
+    isLoading,
+    error,
     createFeedback,
     voteFeedback,
     promoteToRoadmap,
@@ -111,12 +112,42 @@ export function useFeedback() {
 // ============================================
 
 export function usePlanLimits() {
-  const { data, error, isLoading } = useSWR("/api/plan", fetcher);
+  const [limits, setLimits] = useState<PlanLimits>({
+    tier: "free",
+    projects_count: 0,
+    projects_limit: 1,
+    can_create_project: true,
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Charger les limites du plan
+  const loadLimits = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const result = await apiPlan.getLimits();
+      if (result.error) {
+        setError(result.error);
+      } else {
+        setLimits(result.data || limits);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur lors du chargement");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadLimits();
+  }, [loadLimits]);
 
   return {
-    limits: data || { tier: "free", projects_count: 0, projects_limit: 1, can_create_project: true },
+    limits,
     isLoading,
-    error: error?.message,
+    error,
+    refreshLimits: loadLimits,
   };
 }
 

@@ -1,144 +1,164 @@
 "use client";
 
-import useSWR, { mutate } from "swr";
+import { useState, useEffect, useCallback } from "react";
+import { items as apiItems, projects as apiProjects, comments as apiComments, votes as apiVotes } from "@/lib/api";
 import type { RoadmapItem, Comment, ItemStatus, ItemPriority, Label } from "@/types";
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.error || "Erreur lors du chargement");
-  }
-  const data = await res.json();
-  return data.data;
-};
 
 // ============================================
 // Items d'un projet
 // ============================================
 
 export function useRoadmapItems(projectSlug: string | null) {
-  const { data, error, isLoading } = useSWR(
-    projectSlug ? `/api/projects/${projectSlug}` : null,
-    fetcher
+  const [items, setItems] = useState<RoadmapItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Charger les items du projet
+  const loadItems = useCallback(async () => {
+    if (!projectSlug) {
+      setItems([]);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      const result = await apiProjects.getBySlug(projectSlug);
+      if (result.error) {
+        setError(result.error);
+        setItems([]);
+      } else {
+        setItems(result.data!.items || []);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur lors du chargement");
+      setItems([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [projectSlug]);
+
+  useEffect(() => {
+    loadItems();
+  }, [loadItems]);
+
+  // Filtrer les items par statut
+  const getItemsByStatus = useCallback(
+    (status: ItemStatus) => {
+      return items.filter((item) => item.status === status).sort((a, b) => a.position - b.position);
+    },
+    [items]
   );
 
-  const items: RoadmapItem[] = data?.items || [];
+  // Créer un item
+  const createItem = useCallback(
+    async (itemData: {
+      project_id: string;
+      title: string;
+      description?: string;
+      status?: ItemStatus;
+      priority?: ItemPriority;
+      category?: string;
+      target_date?: string;
+      labels?: Label[];
+    }) => {
+      try {
+        const result = await apiItems.create(itemData);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        // Recharger les items après création
+        await loadItems();
+        return result.data!;
+      } catch (err) {
+        throw new Error(err instanceof Error ? err.message : "Erreur lors de la création");
+      }
+    },
+    [loadItems]
+  );
 
-  const getItemsByStatus = (status: ItemStatus) =>
-    items.filter((item) => item.status === status).sort((a, b) => a.position - b.position);
+  // Mettre à jour un item
+  const updateItem = useCallback(
+    async (itemId: string, updates: Partial<RoadmapItem>) => {
+      try {
+        const result = await apiItems.update(itemId, updates);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        // Recharger les items après mise à jour
+        await loadItems();
+        return result.data!;
+      } catch (err) {
+        throw new Error(err instanceof Error ? err.message : "Erreur lors de la mise à jour");
+      }
+    },
+    [loadItems]
+  );
 
-  const createItem = async (itemData: {
-    project_id: string;
-    title: string;
-    description?: string;
-    status?: ItemStatus;
-    priority?: ItemPriority;
-    category?: string;
-    target_date?: string;
-    labels?: Label[];
-  }) => {
-    const res = await fetch("/api/items", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(itemData),
-    });
+  // Supprimer un item
+  const deleteItem = useCallback(
+    async (itemId: string) => {
+      try {
+        const result = await apiItems.delete(itemId);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        // Recharger les items après suppression
+        await loadItems();
+      } catch (err) {
+        throw new Error(err instanceof Error ? err.message : "Erreur lors de la suppression");
+      }
+    },
+    [loadItems]
+  );
 
-    const result = await res.json();
+  // Réordonner les items
+  const reorderItems = useCallback(
+    async (projectId: string, status: ItemStatus, itemIds: string[]) => {
+      try {
+        const result = await apiItems.reorder(projectId, status, itemIds);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        // Recharger les items après réordonnement
+        await loadItems();
+      } catch (err) {
+        throw new Error(err instanceof Error ? err.message : "Erreur lors du réordonnement");
+      }
+    },
+    [loadItems]
+  );
 
-    if (!res.ok) {
-      throw new Error(result.error || "Erreur lors de la création");
-    }
-
-    // Revalidate
-    if (projectSlug) {
-      mutate(`/api/projects/${projectSlug}`);
-    }
-    return result.data as RoadmapItem;
-  };
-
-  const updateItem = async (itemId: string, updates: Partial<RoadmapItem>) => {
-    const res = await fetch(`/api/items/${itemId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updates),
-    });
-
-    const result = await res.json();
-
-    if (!res.ok) {
-      throw new Error(result.error || "Erreur lors de la mise à jour");
-    }
-
-    // Revalidate
-    if (projectSlug) {
-      mutate(`/api/projects/${projectSlug}`);
-    }
-    return result.data as RoadmapItem;
-  };
-
-  const deleteItem = async (itemId: string) => {
-    const res = await fetch(`/api/items/${itemId}`, {
-      method: "DELETE",
-    });
-
-    if (!res.ok) {
-      const result = await res.json();
-      throw new Error(result.error || "Erreur lors de la suppression");
-    }
-
-    // Revalidate
-    if (projectSlug) {
-      mutate(`/api/projects/${projectSlug}`);
-    }
-  };
-
-  const reorderItems = async (projectId: string, status: ItemStatus, itemIds: string[]) => {
-    const res = await fetch("/api/items/reorder", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id: projectId, status, item_ids: itemIds }),
-    });
-
-    if (!res.ok) {
-      const result = await res.json();
-      throw new Error(result.error || "Erreur lors du réordonnement");
-    }
-
-    // Revalidate
-    if (projectSlug) {
-      mutate(`/api/projects/${projectSlug}`);
-    }
-  };
-
-  const toggleVote = async (itemId: string) => {
-    const res = await fetch(`/api/votes/${itemId}`, {
-      method: "POST",
-    });
-
-    const result = await res.json();
-
-    if (!res.ok) {
-      throw new Error(result.error || "Erreur lors du vote");
-    }
-
-    // Revalidate
-    if (projectSlug) {
-      mutate(`/api/projects/${projectSlug}`);
-    }
-    return result.voted as boolean;
-  };
+  // Toggle vote
+  const toggleVote = useCallback(
+    async (itemId: string) => {
+      try {
+        const result = await apiVotes.toggle(itemId);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        // Recharger les items après vote
+        await loadItems();
+        return result.data!.voted;
+      } catch (err) {
+        throw new Error(err instanceof Error ? err.message : "Erreur lors du vote");
+      }
+    },
+    [loadItems]
+  );
 
   return {
     items,
     getItemsByStatus,
     isLoading,
-    error: error?.message,
+    error,
     createItem,
     updateItem,
     deleteItem,
     reorderItems,
     toggleVote,
+    refreshItems: loadItems,
   };
 }
 
@@ -151,54 +171,95 @@ type ItemWithComments = RoadmapItem & {
 };
 
 export function useRoadmapItem(itemId: string | null) {
-  const { data, error, isLoading } = useSWR<ItemWithComments>(
-    itemId ? `/api/items/${itemId}` : null,
-    fetcher
+  const [item, setItem] = useState<RoadmapItem | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Charger l'item et ses commentaires
+  const loadItem = useCallback(async () => {
+    if (!itemId) {
+      setItem(null);
+      setComments([]);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      // Charger l'item
+      const itemResult = await apiItems.get(itemId);
+      if (itemResult.error) {
+        setError(itemResult.error);
+        setItem(null);
+      } else {
+        setItem(itemResult.data!);
+      }
+
+      // Charger les commentaires
+      const commentsResult = await apiComments.getByItem(itemId);
+      if (!commentsResult.error) {
+        setComments(commentsResult.data || []);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur lors du chargement");
+      setItem(null);
+      setComments([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [itemId]);
+
+  useEffect(() => {
+    loadItem();
+  }, [loadItem]);
+
+  // Ajouter un commentaire
+  const addComment = useCallback(
+    async (content: string) => {
+      if (!itemId) return;
+
+      try {
+        const result = await apiComments.create(itemId, content);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        // Recharger l'item et les commentaires
+        await loadItem();
+        return result.data!;
+      } catch (err) {
+        throw new Error(err instanceof Error ? err.message : "Erreur lors de l'ajout du commentaire");
+      }
+    },
+    [itemId, loadItem]
   );
 
-  const addComment = async (content: string) => {
-    if (!itemId) return;
-
-    const res = await fetch("/api/comments", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ item_id: itemId, content }),
-    });
-
-    const result = await res.json();
-
-    if (!res.ok) {
-      throw new Error(result.error || "Erreur lors de l'ajout du commentaire");
-    }
-
-    // Revalidate
-    mutate(`/api/items/${itemId}`);
-    return result.data as Comment;
-  };
-
-  const deleteComment = async (commentId: string) => {
-    const res = await fetch(`/api/comments/${commentId}`, {
-      method: "DELETE",
-    });
-
-    if (!res.ok) {
-      const result = await res.json();
-      throw new Error(result.error || "Erreur lors de la suppression");
-    }
-
-    // Revalidate
-    if (itemId) {
-      mutate(`/api/items/${itemId}`);
-    }
-  };
+  // Supprimer un commentaire
+  const deleteComment = useCallback(
+    async (commentId: string) => {
+      try {
+        const result = await apiComments.delete(commentId);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        // Recharger les commentaires
+        await loadItem();
+      } catch (err) {
+        throw new Error(err instanceof Error ? err.message : "Erreur lors de la suppression");
+      }
+    },
+    [loadItem]
+  );
 
   return {
-    item: data || null,
-    comments: data?.comments || [],
+    item,
+    comments,
     isLoading,
-    error: error?.message,
+    error,
     addComment,
     deleteComment,
+    refreshItem: loadItem,
   };
 }
 

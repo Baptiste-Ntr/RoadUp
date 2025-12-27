@@ -57,9 +57,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6">
             <SidebarTrigger className="-ml-2" />
             <Separator orientation="vertical" className="h-6" />
-            <div className="flex-1" />
           </header>
-          <main className="flex-1 p-6">{children}</main>
+          <main className="w-[calc(100vw-256px)] h-[calc(100vh-56px)] p-6">{children}</main>
         </SidebarInset>
       </SidebarProvider>
     </AppProvider>

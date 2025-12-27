@@ -1,52 +1,66 @@
 "use client";
 
-import useSWR, { mutate } from "swr";
+import { useState, useEffect, useCallback } from "react";
+import { projects as apiProjects } from "@/lib/api";
 import type { Project, RoadmapItem } from "@/types";
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.error || "Erreur lors du chargement");
-  }
-  const data = await res.json();
-  return data.data;
-};
 
 // ============================================
 // Liste des projets
 // ============================================
 
 export function useProjects() {
-  const { data, error, isLoading } = useSWR<Project[]>("/api/projects", fetcher);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const createProject = async (projectData: {
-    name: string;
-    description?: string;
-    is_public?: boolean;
-  }) => {
-    const res = await fetch("/api/projects", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(projectData),
-    });
-
-    const result = await res.json();
-
-    if (!res.ok) {
-      throw new Error(result.error || "Erreur lors de la création");
+  // Charger les projets au montage
+  const loadProjects = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const result = await apiProjects.getAll();
+      if (result.error) {
+        setError(result.error);
+        setProjects([]);
+      } else {
+        setProjects(result.data || []);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur lors du chargement");
+      setProjects([]);
+    } finally {
+      setIsLoading(false);
     }
+  }, []);
 
-    // Revalidate the projects list
-    mutate("/api/projects");
-    return result.data as Project;
-  };
+  useEffect(() => {
+    loadProjects();
+  }, [loadProjects]);
+
+  // Créer un projet
+  const createProject = useCallback(
+    async (projectData: { name: string; description?: string; is_public?: boolean }) => {
+      try {
+        const result = await apiProjects.create(projectData);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        // Recharger la liste après création
+        await loadProjects();
+        return result.data!;
+      } catch (err) {
+        throw new Error(err instanceof Error ? err.message : "Erreur lors de la création");
+      }
+    },
+    [loadProjects]
+  );
 
   return {
-    projects: data || [],
+    projects,
     isLoading,
-    error: error?.message,
+    error,
     createProject,
+    refreshProjects: loadProjects,
   };
 }
 
@@ -60,55 +74,87 @@ type ProjectWithItems = {
 };
 
 export function useProject(slug: string | null) {
-  const { data, error, isLoading } = useSWR<ProjectWithItems>(
-    slug ? `/api/projects/${slug}` : null,
-    fetcher
+  const [project, setProject] = useState<Project | null>(null);
+  const [items, setItems] = useState<RoadmapItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Charger le projet et ses items
+  const loadProject = useCallback(async () => {
+    if (!slug) {
+      setProject(null);
+      setItems([]);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      const result = await apiProjects.getBySlug(slug);
+      if (result.error) {
+        setError(result.error);
+        setProject(null);
+        setItems([]);
+      } else {
+        setProject(result.data!.project);
+        setItems(result.data!.items || []);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur lors du chargement");
+      setProject(null);
+      setItems([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [slug]);
+
+  useEffect(() => {
+    loadProject();
+  }, [loadProject]);
+
+  // Mettre à jour le projet
+  const updateProject = useCallback(
+    async (updates: Partial<Project>) => {
+      if (!slug) return;
+
+      try {
+        const result = await apiProjects.update(slug, updates);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        // Recharger le projet après mise à jour
+        await loadProject();
+        return result.data!;
+      } catch (err) {
+        throw new Error(err instanceof Error ? err.message : "Erreur lors de la mise à jour");
+      }
+    },
+    [slug, loadProject]
   );
 
-  const updateProject = async (updates: Partial<Project>) => {
+  // Supprimer le projet
+  const deleteProject = useCallback(async () => {
     if (!slug) return;
 
-    const res = await fetch(`/api/projects/${slug}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updates),
-    });
-
-    const result = await res.json();
-
-    if (!res.ok) {
-      throw new Error(result.error || "Erreur lors de la mise à jour");
+    try {
+      const result = await apiProjects.delete(slug);
+      if (result.error) {
+        throw new Error(result.error);
+      }
+    } catch (err) {
+      throw new Error(err instanceof Error ? err.message : "Erreur lors de la suppression");
     }
-
-    // Revalidate
-    mutate(`/api/projects/${slug}`);
-    mutate("/api/projects");
-    return result.data as Project;
-  };
-
-  const deleteProject = async () => {
-    if (!slug) return;
-
-    const res = await fetch(`/api/projects/${slug}`, {
-      method: "DELETE",
-    });
-
-    if (!res.ok) {
-      const result = await res.json();
-      throw new Error(result.error || "Erreur lors de la suppression");
-    }
-
-    // Revalidate
-    mutate("/api/projects");
-  };
+  }, [slug]);
 
   return {
-    project: data?.project || null,
-    items: data?.items || [],
+    project,
+    items,
     isLoading,
-    error: error?.message,
+    error,
     updateProject,
     deleteProject,
+    refreshProject: loadProject,
   };
 }
 

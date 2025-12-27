@@ -95,31 +95,6 @@ export const Sidebar = ({ basePath = "/app" }: SidebarProps) => {
     }
   };
 
-  const handleCreateProject = async (data: {
-    name: string;
-    description?: string;
-    is_public?: boolean;
-  }) => {
-    if (isDemoMode) {
-      toast.success("Projet créé (mode démo) !");
-      return { id: "demo", ...data };
-    }
-
-    const res = await fetch("/api/projects", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-
-    const result = await res.json();
-
-    if (!res.ok) {
-      throw new Error(result.error || "Erreur lors de la création");
-    }
-
-    return result.data;
-  };
-
   return (
     <>
       <SidebarShadcn className="border-r border-sidebar-border">
@@ -272,7 +247,6 @@ export const Sidebar = ({ basePath = "/app" }: SidebarProps) => {
       <CreateProjectDialog
         open={showCreateDialog}
         onOpenChange={setShowCreateDialog}
-        onCreateProject={handleCreateProject}
       />
     </>
   );

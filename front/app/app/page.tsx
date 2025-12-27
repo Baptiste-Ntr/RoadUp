@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MessageSquareText, Map, Bell, FileText, Plus } from "lucide-react";
+import { MessageSquareText, Map, Bell, FileText, Plus, ArrowUpRightIcon } from "lucide-react";
 import { StatCard } from "@/components/Dashboard/StatCard";
 import { RoadmapSnapshot } from "@/components/Dashboard/RoadmapSnapshot";
 import { RecentActivity } from "@/components/Dashboard/RecentActivity";
@@ -11,6 +11,12 @@ import { CreateItemDialog } from "@/components/Dialogs/CreateItemDialog";
 import { CreateChangelogDialog } from "@/components/Dialogs/CreateChangelogDialog";
 import { useAppContext } from "@/contexts/AppContext";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Empty, EmptyHeader, EmptyMedia, EmptyDescription, EmptyTitle, EmptyContent } from "@/components/ui/empty";
+import { IconFolderCode } from "@tabler/icons-react"
+import { CreateProjectDialog } from "@/components/Dialogs/CreateProjectDialog";
+import { toast } from "sonner";
+import { useProjects } from "@/hooks/use-projects";
+import { Spinner } from "@/components/ui/spinner";
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -23,32 +29,73 @@ export default function DashboardPage() {
   const {
     user,
     projects,
-    roadmapItems,
-    activities,
-    stats,
-    trendingItems,
-    createItem,
-    createChangelog,
     isLoadingProjects,
-    isLoadingItems,
   } = useAppContext();
-
   const [showItemDialog, setShowItemDialog] = useState(false);
   const [showChangelogDialog, setShowChangelogDialog] = useState(false);
 
-  const firstProject = projects[0];
-  const inProgressItems = roadmapItems.filter((i) => i.status === "in_progress");
-  const plannedItems = roadmapItems.filter((i) => i.status === "planned");
+  // const inProgressItems = roadmapItems.filter((i) => i.status === "in_progress");
+  // const plannedItems = roadmapItems.filter((i) => i.status === "planned");
 
   const handleCreateChangelog = async (data: {
     version: string;
     title: string;
     description?: string;
   }) => {
-    await createChangelog(data);
+    // await createChangelog(data);
   };
 
-  const isLoading = isLoadingProjects || isLoadingItems;
+  // const isLoading = isLoadingProjects || isLoadingItems;
+  const isLoading = isLoadingProjects
+
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+
+  if(isLoading) {
+    return (
+      <Spinner />
+    )
+  }
+
+
+  if(!projects || projects.length < 1) {
+    console.log(projects)
+    return (
+      <>
+        <div className="h-full flex items-start justify-between">
+          <Empty className="h-full">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <IconFolderCode />
+              </EmptyMedia>
+              <EmptyTitle>Pas de Projets pour l'instant</EmptyTitle>
+              <EmptyDescription>
+                Commencez par créer votre premier projet
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <div className="flex gap-2">
+                <Button onClick={() => setShowCreateDialog(true)}>Créer votre premier projet</Button>
+              </div>
+            </EmptyContent>
+            <Button
+              variant="link"
+              asChild
+              className="text-muted-foreground"
+              size="sm"
+            >
+              <a href="#">
+                Savoir plus <ArrowUpRightIcon />
+              </a>
+            </Button>
+          </Empty>
+        </div>
+        <CreateProjectDialog
+          open={showCreateDialog}
+          onOpenChange={setShowCreateDialog}
+        />
+      </>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -84,6 +131,7 @@ export default function DashboardPage() {
           </>
         ) : (
           <>
+          {/*
             <StatCard
               title="Total Feedback"
               value={stats.total_feedback.toLocaleString()}
@@ -105,6 +153,7 @@ export default function DashboardPage() {
               icon={Bell}
               iconClassName="bg-amber-50 text-amber-600"
             />
+          */}
           </>
         )}
       </div>
@@ -120,11 +169,13 @@ export default function DashboardPage() {
             </>
           ) : (
             <>
+            {/*
               <RoadmapSnapshot
                 inProgressItems={inProgressItems}
                 plannedItems={plannedItems}
               />
               <RecentActivity activities={activities} />
+              */}
             </>
           )}
         </div>
@@ -155,9 +206,13 @@ export default function DashboardPage() {
 
           {isLoading ? (
             <Skeleton className="h-[200px] rounded-xl" />
-          ) : (
-            <TrendingRequests items={trendingItems} />
-          )}
+          ) : 
+            <>
+              {/*
+                <TrendingRequests items={trendingItems} />
+              */}
+            </>
+          }
 
           {/* Pro Tip */}
           <div className="rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 p-5">
@@ -173,7 +228,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Dialogs */}
+      {/* Dialogs
       {firstProject && (
         <CreateItemDialog
           open={showItemDialog}
@@ -181,7 +236,7 @@ export default function DashboardPage() {
           projectId={firstProject.id}
           onCreateItem={createItem}
         />
-      )}
+      )} */}
 
       <CreateChangelogDialog
         open={showChangelogDialog}
